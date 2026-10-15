@@ -1,0 +1,59 @@
+CIE ID 1.5.2 — Universal (build 35)
+INSTALLAZIONE SU macOS
+
+Questa distribuzione è un fork indipendente di italia/cie-middleware-macos.
+Non è una distribuzione ufficiale IPZS e non è approvata o supportata da IPZS.
+
+REQUISITI
+- macOS 12.0 o successivo.
+- Mac Apple Silicon oppure Intel: il DMG contiene entrambe le architetture.
+- Per utilizzare la CIE servono una carta e un lettore compatibile.
+
+INSTALLAZIONE
+1. Scarica CIE-ID-1.5.2-universal2.dmg dagli allegati della release.
+2. Chiudi eventuali copie di CIE ID in esecuzione.
+3. Apri il DMG con un doppio clic.
+4. Trascina CIE ID.app sul collegamento Applicazioni presente nella finestra.
+   Se esiste già un'app con lo stesso nome, verifica quale versione desideri
+   conservare prima di confermare una sostituzione.
+5. Espelli il volume CIE ID 1.5.2.
+6. Avvia CIE ID dalla cartella Applicazioni.
+
+L'app e il DMG sono firmati con Developer ID Application e notarizzati da
+Apple. Il ticket di notarizzazione è incorporato in entrambi. Non occorre
+disattivare Gatekeeper o rimuovere gli attributi di sicurezza di macOS.
+
+PRIMO UTILIZZO
+Il fork utilizza identificativi e cache separati da quelli dell'app ufficiale;
+può quindi essere necessario associare nuovamente la CIE. Se macOS richiede
+l'attivazione dell'estensione per smart card, autorizza CIEToken nelle
+Impostazioni di Sistema. Il PIN della carta va inserito soltanto nell'app.
+
+GUIDA INCLUSA NELL'APP
+Apri Tutorial dal menu laterale per consultare la guida del fork anche senza
+connessione. I collegamenti ai siti web si aprono nel browser predefinito.
+
+CONTENUTI
+Il bundle comprende l'app, il middleware PKCS#11, l'estensione CryptoTokenKit
+e l'SDK di firma, compilati per arm64 e x86_64. Le verifiche software sono
+state eseguite per entrambe le architetture; il collaudo hardware su ogni
+modello di Mac, CIE e lettore resta distinto dalla notarizzazione Apple.
+
+SORGENTI E LICENZE
+CIE-ID-1.5.2-corresponding-source.tar.gz contiene i sorgenti corrispondenti
+alla build distribuita, gli archivi dei sorgenti delle dipendenze, le licenze
+e le istruzioni di ricompilazione/ricollegamento (Docs/REBUILDING.md).
+Conservare questo archivio insieme alla distribuzione binaria. L'inventario
+completo è in THIRD_PARTY_NOTICES.md e LICENSE_AUDIT.md nel pacchetto.
+
+VERIFICA DEI DOWNLOAD (FACOLTATIVA)
+Salva DMG, archivio dei sorgenti, questo file e SHA256SUMS.txt nella stessa
+cartella. Apri il Terminale in quella cartella ed esegui:
+
+    shasum -a 256 -c SHA256SUMS.txt
+
+Ogni file deve riportare OK.
+
+PROVENIENZA
+https://github.com/italia/cie-middleware-macos
+Commit upstream: 43da456fb3002e34beccda73b9bc4b149acae534

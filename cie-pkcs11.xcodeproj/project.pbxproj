@@ -1751,7 +1751,7 @@
 				"INFOPLIST_KEY_LSApplicationCategoryType" = "public.app-category.utilities";
 				"PRODUCT_BUNDLE_IDENTIFIER" = "$(CIE_BUNDLE_ID)";
 				"CLANG_ENABLE_MODULES" = "YES";
-				"CURRENT_PROJECT_VERSION" = "34";
+				"CURRENT_PROJECT_VERSION" = "35";
 				"MTL_FAST_MATH" = "YES";
 				"MTL_ENABLE_DEBUG_INFO" = "INCLUDE_SOURCE";
 				"MACOSX_DEPLOYMENT_TARGET" = "12.0";
@@ -1787,7 +1787,7 @@
 				"INFOPLIST_KEY_LSApplicationCategoryType" = "public.app-category.utilities";
 				"PRODUCT_BUNDLE_IDENTIFIER" = "$(CIE_BUNDLE_ID)";
 				"CLANG_ENABLE_MODULES" = "YES";
-				"CURRENT_PROJECT_VERSION" = "34";
+				"CURRENT_PROJECT_VERSION" = "35";
 				"MTL_FAST_MATH" = "YES";
 				"MACOSX_DEPLOYMENT_TARGET" = "12.0";
 				"CODE_SIGN_STYLE" = "Automatic";

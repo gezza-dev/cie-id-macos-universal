@@ -19,19 +19,28 @@ La documentazione ufficiale è disponibile su
 e il prodotto ufficiale su
 [Mac App Store](https://apps.apple.com/it/app/software-cie/id6476510798?mt=12).
 
-## Scaricare CIE ID 1.5.1
+## Scaricare CIE ID 1.5.2
 
-La [release v1.5.1 (build 34)](https://github.com/gezza-dev/cie-id-macos-universal/releases/tag/v1.5.1)
+La [release v1.5.2 (build 35)](https://github.com/gezza-dev/cie-id-macos-universal/releases/tag/v1.5.2)
 contiene l'app Universal e i materiali corrispondenti:
 
-- [DMG per installare CIE ID](https://github.com/gezza-dev/cie-id-macos-universal/releases/download/v1.5.1/CIE-ID-1.5.1-universal2.dmg),
+- [DMG per installare CIE ID](https://github.com/gezza-dev/cie-id-macos-universal/releases/download/v1.5.2/CIE-ID-1.5.2-universal2.dmg),
   firmato con **Developer ID Application** e **notarizzato da Apple**.
-- [Istruzioni di installazione in italiano](https://github.com/gezza-dev/cie-id-macos-universal/releases/download/v1.5.1/INSTALLAZIONE.txt),
+- [Istruzioni di installazione in italiano](https://github.com/gezza-dev/cie-id-macos-universal/releases/download/v1.5.2/INSTALLAZIONE.txt),
   consultabili anche offline.
-- [Sorgenti corrispondenti completi](https://github.com/gezza-dev/cie-id-macos-universal/releases/download/v1.5.1/CIE-ID-1.5.1-corresponding-source.tar.gz),
+- [Sorgenti corrispondenti completi](https://github.com/gezza-dev/cie-id-macos-universal/releases/download/v1.5.2/CIE-ID-1.5.2-corresponding-source.tar.gz),
   inclusi gli archivi dei sorgenti delle 13 dipendenze e le ricette di build.
-- [Checksum SHA-256](https://github.com/gezza-dev/cie-id-macos-universal/releases/download/v1.5.1/SHA256SUMS.txt)
+- [Checksum SHA-256](https://github.com/gezza-dev/cie-id-macos-universal/releases/download/v1.5.2/SHA256SUMS.txt)
   per verificare i tre allegati precedenti.
+
+## Novità della versione 1.5.2
+
+- **Guida del fork inclusa nell'app**, consultabile anche offline dal menu
+  **Tutorial**, con istruzioni per associazione, firma, verifica, PIN/PUK e browser.
+- Collegamento aggiornato alla pagina ufficiale Software CIE e apertura dei
+  collegamenti web nel **browser predefinito**.
+- Istruzioni aggiornate per il bundle del fork e installazione descritta
+  senza riferimenti agli strumenti di sviluppo.
 
 ## Requisiti e installazione
 
@@ -40,12 +49,12 @@ contiene l'app Universal e i materiali corrispondenti:
 - L'accesso a Internet è necessario per interrogare i servizi di revoca
   durante la verifica delle firme.
 
-1. Scaricare il [DMG della release v1.5.1](https://github.com/gezza-dev/cie-id-macos-universal/releases/download/v1.5.1/CIE-ID-1.5.1-universal2.dmg).
+1. Scaricare il [DMG della release v1.5.2](https://github.com/gezza-dev/cie-id-macos-universal/releases/download/v1.5.2/CIE-ID-1.5.2-universal2.dmg).
 2. Chiudere eventuali copie di CIE ID in esecuzione e aprire il DMG.
 3. Trascinare **CIE ID.app** sul collegamento **Applicazioni** presente
    nella finestra. Se esiste già un'app con lo stesso nome, verificare
    quale versione conservare prima di confermare una sostituzione.
-4. Espellere il volume **CIE ID 1.5.1**.
+4. Espellere il volume **CIE ID 1.5.2**.
 5. Avviare **CIE ID** dalla cartella **Applicazioni** e seguire la procedura
    di associazione della carta.
 
@@ -64,12 +73,12 @@ shasum -a 256 -c SHA256SUMS.txt
 Ogni file deve riportare `OK`. Per ricompilare la versione distribuita,
 usare l'archivio **corresponding-source.tar.gz**: i download automatici
 GitHub **Source code (zip/tar.gz)** non includono gli archivi delle dipendenze.
-Il tag `v1.5.1` identifica lo snapshot usato per quella release; il ramo
+Il tag `v1.5.2` identifica lo snapshot usato per quella release; il ramo
 `main` può contenere aggiornamenti successivi, compresa questa documentazione.
 
 ## Stato del progetto
 
-- Release **1.5.1 (build 34)** Universal disponibile per Apple Silicon e Intel.
+- Release **1.5.2 (build 35)** Universal disponibile per Apple Silicon e Intel.
 - Compilazione e test software di entrambe le architetture verificati con
   Xcode 27 e macOS 26.7.1 su Apple Silicon; i test Intel sono eseguiti tramite
   Rosetta e non sostituiscono il collaudo su un Mac Intel reale.
