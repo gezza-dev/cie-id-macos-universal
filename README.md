@@ -6,7 +6,7 @@ con app macOS, middleware PKCS#11, estensione CryptoTokenKit e SDK di firma
 compilati nativamente per **Apple Silicon (arm64) e Intel (x86_64)** in
 un unico bundle **Universal 2**.
 
-**Questo fork non è un prodotto ufficiale di IPZS, non è approvato o
+**Questo fork non è un prodotto ufficiale dell'Istituto Poligrafico e Zecca dello Stato Italiano, non è approvato o
 supportato da IPZS e non sostituisce la distribuzione ufficiale.** I nomi,
 i copyright e gli avvisi del progetto originale sono conservati per
 attribuzione. L'interfaccia conserva risorse e nomi storici: ciò non implica
