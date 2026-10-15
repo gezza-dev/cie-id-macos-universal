@@ -1,0 +1,8 @@
+{
+  "ssziparchive": {
+    "version": "2.5.5",
+    "url": "https://codeload.github.com/ZipArchive/ZipArchive/tar.gz/refs/tags/2.5.5",
+    "sha256": "f87de243cfbcf0433847a20ab38ccefcb01a3e419c8aaffaa67defd2f7f07225",
+    "archive": "ssziparchive-2.5.5.tar.gz"
+  }
+}

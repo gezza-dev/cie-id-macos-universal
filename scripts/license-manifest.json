@@ -1,0 +1,378 @@
+{
+  "schema_version": 1,
+  "verified_on": "2026-10-14",
+  "upstream_commit": "43da456fb3002e34beccda73b9bc4b149acae534",
+  "dependencies": {
+    "openssl": {
+      "version": "3.5.9",
+      "url": "https://github.com/openssl/openssl/releases/download/openssl-3.5.9/openssl-3.5.9.tar.gz",
+      "sha256": "603f5602e2eef00d77fbd429d34dcd5822bb301757a1bc9cdb24c670f1eb859a",
+      "archive": "openssl-3.5.9.tar.gz"
+    },
+    "cryptopp": {
+      "version": "8.2.0",
+      "url": "https://codeload.github.com/weidai11/cryptopp/tar.gz/refs/tags/CRYPTOPP_8_2_0",
+      "sha256": "e3bcd48a62739ad179ad8064b523346abb53767bcbefc01fe37303412292343e",
+      "archive": "cryptopp-8.2.0.tar.gz"
+    },
+    "podofo": {
+      "version": "0.9.8",
+      "url": "https://codeload.github.com/podofo/podofo/tar.gz/67b5b8272b76700e0bb756aa0b45300cfc576100",
+      "sha256": "6e2ee029183dcbec046653e57a1deedfaabd7c5a347ab6188b8bbe4bfdd8f7db",
+      "archive": "podofo-0.9.8.tar.gz"
+    },
+    "zlib": {
+      "version": "1.3.1",
+      "url": "https://codeload.github.com/madler/zlib/tar.gz/refs/tags/v1.3.1",
+      "sha256": "17e88863f3600672ab49182f217281b6fc4d3c762bde361935e436a95214d05c",
+      "archive": "zlib-1.3.1.tar.gz"
+    },
+    "libpng": {
+      "version": "1.6.47",
+      "url": "https://codeload.github.com/pnggroup/libpng/tar.gz/refs/tags/v1.6.47",
+      "sha256": "631a4c58ea6c10c81f160c4b21fa8495b715d251698ebc2552077e8450f30454",
+      "archive": "libpng-1.6.47.tar.gz"
+    },
+    "freetype": {
+      "version": "2.13.3",
+      "url": "https://codeload.github.com/freetype/freetype/tar.gz/refs/tags/VER-2-13-3",
+      "sha256": "bc5c898e4756d373e0d991bab053036c5eb2aa7c0d5c67e8662ddc6da40c4103",
+      "archive": "freetype-2.13.3.tar.gz"
+    },
+    "expat": {
+      "version": "2.6.4",
+      "url": "https://codeload.github.com/libexpat/libexpat/tar.gz/refs/tags/R_2_6_4",
+      "sha256": "372b18f6527d162fa9658f1c74d22a37429b82d822f5a1e1fc7e00f6045a06a2",
+      "archive": "expat-2.6.4.tar.gz"
+    },
+    "fontconfig": {
+      "version": "2.15.0",
+      "url": "https://www.freedesktop.org/software/fontconfig/release/fontconfig-2.15.0.tar.xz",
+      "sha256": "63a0658d0e06e0fa886106452b58ef04f21f58202ea02a94c39de0d3335d7c0e",
+      "archive": "fontconfig-2.15.0.tar.xz"
+    },
+    "libiconv": {
+      "version": "1.17",
+      "url": "https://ftp.gnu.org/pub/gnu/libiconv/libiconv-1.17.tar.gz",
+      "sha256": "8f74213b56238c85a50a5329f77e06198771e70dd9a739779f4c02f65d971313",
+      "archive": "libiconv-1.17.tar.gz"
+    },
+    "libxml2": {
+      "version": "2.9.14",
+      "url": "https://download.gnome.org/sources/libxml2/2.9/libxml2-2.9.14.tar.xz",
+      "sha256": "60d74a257d1ccec0475e749cba2f21559e48139efba6ff28224357c7c798dfee",
+      "archive": "libxml2-2.9.14.tar.xz"
+    },
+    "libcurl": {
+      "version": "8.12.1",
+      "url": "https://codeload.github.com/curl/curl/tar.gz/refs/tags/curl-8_12_1",
+      "sha256": "6edc063d1ebaf9cf3b3b46e9fef2f3cd8932694989ecd43d005d6e828426d09f",
+      "archive": "libcurl-8.12.1.tar.gz"
+    },
+    "bzip2": {
+      "version": "1.0.8",
+      "url": "https://sourceware.org/pub/bzip2/bzip2-1.0.8.tar.gz",
+      "sha256": "ab5a03176ee106d3f0fa90e381da478ddae405918153cca248e682cd0c4a2269",
+      "archive": "bzip2-1.0.8.tar.gz"
+    }
+  },
+  "app_dependencies": {
+    "ssziparchive": {
+      "version": "2.5.5",
+      "url": "https://codeload.github.com/ZipArchive/ZipArchive/tar.gz/refs/tags/2.5.5",
+      "sha256": "f87de243cfbcf0433847a20ab38ccefcb01a3e419c8aaffaa67defd2f7f07225",
+      "archive": "ssziparchive-2.5.5.tar.gz"
+    }
+  },
+  "license_files": [
+    {
+      "path": "LICENSES/cryptopp/License.txt",
+      "sha256": "f29d65ae3f0c8e327284f193524643ffb4d682fcca3e1740a5c6cbab0e720583",
+      "source": ".build/dependencies/arm64/sources/cryptopp/cryptopp-CRYPTOPP_8_2_0/License.txt"
+    },
+    {
+      "path": "LICENSES/podofo/COPYING",
+      "sha256": "204d8eff92f95aac4df6c8122bc1505f468f3a901e5a4cc08940e0ede1938994",
+      "source": ".build/dependencies/arm64/sources/podofo/podofo-67b5b8272b76700e0bb756aa0b45300cfc576100/COPYING"
+    },
+    {
+      "path": "LICENSES/podofo/COPYING.LIB",
+      "sha256": "c340cbee4974bb96019e782f2279df016c92fb1e7f5299347e779d9acedbb991",
+      "source": ".build/dependencies/arm64/sources/podofo/podofo-67b5b8272b76700e0bb756aa0b45300cfc576100/COPYING.LIB"
+    },
+    {
+      "path": "LICENSES/podofo/COPYING.exception",
+      "sha256": "ae7aa334f93d4cf667237d46d9a1333cb2a315f157fefc1a26f89ce23a305216",
+      "source": ".build/dependencies/arm64/sources/podofo/podofo-67b5b8272b76700e0bb756aa0b45300cfc576100/COPYING.exception"
+    },
+    {
+      "path": "LICENSES/zlib/LICENSE",
+      "sha256": "845efc77857d485d91fb3e0b884aaa929368c717ae8186b66fe1ed2495753243",
+      "source": ".build/dependencies/arm64/sources/zlib/zlib-1.3.1/LICENSE"
+    },
+    {
+      "path": "LICENSES/bzip2/LICENSE",
+      "sha256": "c6dbbf828498be844a89eaa3b84adbab3199e342eb5cb2ed2f0d4ba7ec0f38a3",
+      "source": ".build/dependencies/arm64/sources/bzip2/bzip2-1.0.8/LICENSE"
+    },
+    {
+      "path": "LICENSES/libiconv/COPYING.LIB",
+      "sha256": "dc626520dcd53a22f727af3ee42c770e56c97a64fe3adb063799d8ab032fe551",
+      "source": ".build/dependencies/arm64/sources/libiconv/libiconv-1.17/COPYING.LIB"
+    },
+    {
+      "path": "LICENSES/libiconv/libcharset--COPYING.LIB",
+      "sha256": "dc626520dcd53a22f727af3ee42c770e56c97a64fe3adb063799d8ab032fe551",
+      "source": ".build/dependencies/arm64/sources/libiconv/libiconv-1.17/libcharset/COPYING.LIB"
+    },
+    {
+      "path": "LICENSES/expat/COPYING",
+      "sha256": "122f2c27000472a201d337b9b31f7eb2b52d091b02857061a8880371612d9534",
+      "source": ".build/dependencies/arm64/sources/expat/libexpat-R_2_6_4/COPYING"
+    },
+    {
+      "path": "LICENSES/expat/expat--COPYING",
+      "sha256": "122f2c27000472a201d337b9b31f7eb2b52d091b02857061a8880371612d9534",
+      "source": ".build/dependencies/arm64/sources/expat/libexpat-R_2_6_4/expat/COPYING"
+    },
+    {
+      "path": "LICENSES/libpng/LICENSE",
+      "sha256": "16d9daaafbf63a31a5bdc91d4600972548fef5aaa1244202393288dbd079c49a",
+      "source": ".build/dependencies/arm64/sources/libpng/libpng-1.6.47/LICENSE"
+    },
+    {
+      "path": "LICENSES/freetype/LICENSE.TXT",
+      "sha256": "2e3bbb7d7c5c396368dd0853a790ec29ce5b8647163dde42a0493fb0d6556b2b",
+      "source": ".build/dependencies/arm64/sources/freetype/freetype-VER-2-13-3/LICENSE.TXT"
+    },
+    {
+      "path": "LICENSES/freetype/docs--FTL.TXT",
+      "sha256": "08c135755dd589039470f1fdbb400daaabaaa50d0b366d19cebff4d22986baa1",
+      "source": ".build/dependencies/arm64/sources/freetype/freetype-VER-2-13-3/docs/FTL.TXT"
+    },
+    {
+      "path": "LICENSES/freetype/docs--GPLv2.TXT",
+      "sha256": "c4120c6752c910c299e3bd9cb3a46ff262c268303ca2069b61f92f10a5656c18",
+      "source": ".build/dependencies/arm64/sources/freetype/freetype-VER-2-13-3/docs/GPLv2.TXT"
+    },
+    {
+      "path": "LICENSES/freetype/src--bdf--README",
+      "sha256": "7984455e7e5a9faba3797c8bf095fbe10cc846316b7320aff8c58402e22b82fe",
+      "source": ".build/dependencies/arm64/sources/freetype/freetype-VER-2-13-3/src/bdf/README"
+    },
+    {
+      "path": "LICENSES/freetype/src--pcf--README",
+      "sha256": "18d9782898d9eac04476e2f744678137b2a889689ed3e923e052fc396a86f86b",
+      "source": ".build/dependencies/arm64/sources/freetype/freetype-VER-2-13-3/src/pcf/README"
+    },
+    {
+      "path": "LICENSES/freetype/fthash-notice.txt",
+      "sha256": "63fdb7bff9ed44a4dae7ea53e7bc543531eb689c33d3029e9e3935cb8ce8497e",
+      "source": ".build/dependencies/arm64/sources/freetype/freetype-VER-2-13-3/src/base/fthash.c:first-comment"
+    },
+    {
+      "path": "LICENSES/fontconfig/COPYING",
+      "sha256": "51a51aa9823704fd90bccc616cdd17ebabb5b2b3e9cbde886ca02c7002288067",
+      "source": ".build/dependencies/arm64/sources/fontconfig/fontconfig-2.15.0/COPYING"
+    },
+    {
+      "path": "LICENSES/libxml2/COPYING",
+      "sha256": "c5c63674f8a83c4d2e385d96d1c670a03cb871ba2927755467017317878574bd",
+      "source": ".build/dependencies/arm64/sources/libxml2/libxml2-2.9.14/COPYING"
+    },
+    {
+      "path": "LICENSES/libxml2/Copyright",
+      "sha256": "c5c63674f8a83c4d2e385d96d1c670a03cb871ba2927755467017317878574bd",
+      "source": ".build/dependencies/arm64/sources/libxml2/libxml2-2.9.14/Copyright"
+    },
+    {
+      "path": "LICENSES/libxml2/hash.c-notice.txt",
+      "sha256": "1516032a0f681a9dca23c3a439a98877fa1a5475ba3827c3175814182798bcf2",
+      "source": ".build/dependencies/arm64/sources/libxml2/libxml2-2.9.14/hash.c:first-comment"
+    },
+    {
+      "path": "LICENSES/libxml2/list.c-notice.txt",
+      "sha256": "f7e1dd16905738b50f2c88c14bb778b1730c2023c2910485106d1cc8078fa1c7",
+      "source": ".build/dependencies/arm64/sources/libxml2/libxml2-2.9.14/list.c:first-comment"
+    },
+    {
+      "path": "LICENSES/libxml2/trio.c-notice.txt",
+      "sha256": "7993d089cbf4cb884bebffc042f1eab1a0b340d6007071b07b312db5cfc851f3",
+      "source": ".build/dependencies/arm64/sources/libxml2/libxml2-2.9.14/trio.c:first-comment"
+    },
+    {
+      "path": "LICENSES/libxml2/triostr.c-notice.txt",
+      "sha256": "a579d67a30da83f1e0dfcb135f601bde3216f3312ef724ca87c4c5415f50e8c6",
+      "source": ".build/dependencies/arm64/sources/libxml2/libxml2-2.9.14/triostr.c:first-comment"
+    },
+    {
+      "path": "LICENSES/libcurl/COPYING",
+      "sha256": "e18f1989333b70044b2adfb7dc2f905d0119dbdcac3bc9f4bc9d540e3a29de5b",
+      "source": ".build/dependencies/arm64/sources/libcurl/curl-curl-8_12_1/COPYING"
+    },
+    {
+      "path": "LICENSES/ssziparchive/LICENSE.txt",
+      "sha256": "d02a57f131864af6c4c29de50f26d01098bed336277bbf1ae7b5d3d3c56d9f2d",
+      "source": ".build/app-dependencies/arm64/sources/ZipArchive-2.5.5/LICENSE.txt"
+    },
+    {
+      "path": "LICENSES/ssziparchive/SSZipArchive--minizip--LICENSE",
+      "sha256": "675181c03fc1302a1c8554c00f7be9bb420c5dbc9dcc2013433cec144413de03",
+      "source": ".build/app-dependencies/arm64/sources/ZipArchive-2.5.5/SSZipArchive/minizip/LICENSE"
+    },
+    {
+      "path": "LICENSES/ssziparchive/minizip-copyrights.txt",
+      "sha256": "6e2f59002302a71afebcf3c366adbfdbc5f8cdadeaebb51cf66ee3f46e1b0958",
+      "source": ".build/app-dependencies/arm64/sources/ZipArchive-2.5.5/SSZipArchive/minizip/mz_zip.h:first-comment"
+    },
+    {
+      "path": "LICENSES/upstream/LICENSE.txt",
+      "sha256": "715ec9cd9df03e1e960b31e590f9c64e48352b92f83942274f946ad08c2a4523",
+      "source": "LICENSE.txt"
+    },
+    {
+      "path": "LICENSES/rxi-log/LICENSE",
+      "sha256": "a7286cd27e7d0e4d466f195a581b07bcd5bd795eed474af1972497b45e360816",
+      "source": "cie-pkcs11/LOGGER/LICENSE"
+    },
+    {
+      "path": "LICENSES/embedded-sdk/rc2.c-notice.txt",
+      "sha256": "a2f88ab87062cd2fca80e637d2d524c14cbee557fbb5f0436450f3863db07fec",
+      "source": "cie_sign_sdk/src/RSA/rc2.c:first-comment;Latin-1-to-UTF-8"
+    },
+    {
+      "path": "LICENSES/embedded-sdk/base64-notice.txt",
+      "sha256": "c634d1d36d8f848e47a07b4c309255d2a43249397bd24e06f6ee28bddb4c0c41",
+      "source": "cie_sign_sdk/src/Base64.cpp:first-comment"
+    },
+    {
+      "path": "LICENSES/embedded-sdk/pkcs11-notice.txt",
+      "sha256": "e97556efa6723c3a8c3ff0613606168c022e7c3f2740016213fa89fa61f24db5",
+      "source": "cie-pkcs11/PKCS11/pkcs11.h:preamble"
+    },
+    {
+      "path": "LICENSES/gnu/COPYING",
+      "sha256": "204d8eff92f95aac4df6c8122bc1505f468f3a901e5a4cc08940e0ede1938994",
+      "source": ".build/dependencies/arm64/sources/podofo/podofo-67b5b8272b76700e0bb756aa0b45300cfc576100/COPYING"
+    },
+    {
+      "path": "LICENSES/gnu/COPYING.LIB",
+      "sha256": "c340cbee4974bb96019e782f2279df016c92fb1e7f5299347e779d9acedbb991",
+      "source": ".build/dependencies/arm64/sources/podofo/podofo-67b5b8272b76700e0bb756aa0b45300cfc576100/COPYING.LIB"
+    },
+    {
+      "path": "LICENSES/allura/COPYRIGHT.txt",
+      "sha256": "406372d84a5b982727c0f7db20033ae861d4c9cdc32623f864689686a8550637",
+      "source": "CIE ID/Fonts/Allura-Regular.ttf:name-table"
+    },
+    {
+      "path": "LICENSES/allura/OFL-1.1.txt",
+      "sha256": "fba7fe59c0b0498318014001ccb3fb0cbcc8d8402bfc09af7100cbe7d352f6ac",
+      "source": "https://raw.githubusercontent.com/google/fonts/main/ofl/allura/OFL.txt:standard-license-text"
+    },
+    {
+      "path": "LICENSES/cryptopp-legacy-7.0/License.txt",
+      "sha256": "fe5f5f187e6e38ac2f833956fc5c4cab2df08797cff07f540e4ee74f12f7ee5b",
+      "source": "https://raw.githubusercontent.com/weidai11/cryptopp/CRYPTOPP_7_0_0/License.txt"
+    },
+    {
+      "path": "LICENSES/bigint/README.txt",
+      "sha256": "32759d1397d8f7b9e15ece146e4038b22b90e93b4935b5a840bcef4d2ba5ea55",
+      "source": "https://mattmccutchen.net/bigint/bigint-2010.04.30.tar.bz2:README"
+    },
+    {
+      "path": "LICENSES/freetype/ft-hb.c-notice.txt",
+      "sha256": "9eb9395c70e884f61081775892fae5949ad7762461bea5753dc5478b0c080302",
+      "source": ".build/dependencies/arm64/sources/freetype/freetype-VER-2-13-3/src/autofit/ft-hb.c:licence-comment"
+    },
+    {
+      "path": "LICENSES/libxml2/trionan.c-notice.txt",
+      "sha256": "80afef1f84181c45384e45aed4682519957c79c5330ec077a98e678f5fed96e6",
+      "source": ".build/dependencies/arm64/sources/libxml2/libxml2-2.9.14/trionan.c:licence-comment"
+    },
+    {
+      "path": "LICENSES/libxml2/triop.h-notice.txt",
+      "sha256": "4418edd7da9bbb90febe4cf3c4376e5d7591e1df276f7debe6601cf4eafa77cd",
+      "source": ".build/dependencies/arm64/sources/libxml2/libxml2-2.9.14/triop.h:licence-comment"
+    },
+    {
+      "path": "LICENSES/unicode/Unicode-LICENSE-V3.txt",
+      "sha256": "e7a93b009565cfce55919a381437ac4db883e9da2126fa28b91d12732bc53d96",
+      "source": "https://www.unicode.org/license.txt"
+    },
+    {
+      "path": "LICENSES/unicode/CaseFolding-15.1.0-notice.txt",
+      "sha256": "6d5e82bd3fa3194e5c707c1e01d4c5f6e1b999e15e1b2fdffad5d7ea48311b84",
+      "source": ".build/dependencies/arm64/sources/fontconfig/fontconfig-2.15.0/fc-case/CaseFolding.txt:header"
+    },
+    {
+      "path": "LICENSES/openssl/LICENSE.txt",
+      "sha256": "7d5450cb2d142651b8afa315b5f238efc805dad827d91ba367d8516bc9d49e7a",
+      "source": ".build/dependencies/arm64/sources/openssl/openssl-3.5.9/LICENSE.txt"
+    },
+    {
+      "path": "LICENSES/openssl/AUTHORS.md",
+      "sha256": "b9f638dfc06b59c2d3b808186c3b30f713805a5db390f5b77b1703ac58acb83e",
+      "source": ".build/dependencies/arm64/sources/openssl/openssl-3.5.9/AUTHORS.md"
+    }
+  ],
+  "publication_status": "clean-snapshot-prepared",
+  "binary_release_status": "requires-matching-source-package",
+  "issues": [
+    {
+      "id": "A01",
+      "status": "resolved",
+      "scopes": [
+        "binary"
+      ],
+      "summary": "GPL SDK code linked with OpenSSL 1.1.1; no applicable exception verified",
+      "resolution": "GPL production SDK implementations removed; native OpenSSL digest and RSA adapters plus BSD standard-library reader, exceptions and shared property table replace them. TestCIE GPL remains a separate test tool outside CIE ID.app. See scripts/replaced-legacy-sources.json and SDK replacement tests. OpenSSL is now 3.5.9 LTS under Apache-2.0; provider RSA import/recovery, static default/legacy providers, explicit ENGINE callback compatibility and TLS interoperability are tested."
+    },
+    {
+      "id": "A02",
+      "status": "resolved",
+      "scopes": [
+        "source",
+        "binary"
+      ],
+      "summary": "RSAEURO permission terms for the embedded copy require verification or replacement",
+      "resolution": "All ten RSAEURO source files removed from the current snapshot and build. RSA PKCS#1 recovery uses OpenSSL EVP_PKEY_verify_recover. Original hashes recorded in scripts/replaced-legacy-sources.json; publish a clean snapshot without old Git history."
+    },
+    {
+      "id": "A03",
+      "status": "resolved",
+      "scopes": [
+        "source",
+        "binary"
+      ],
+      "summary": "Paul E. Jones SHA-1 permission for this embedded version requires verification or replacement",
+      "resolution": "Paul E. Jones sha1.c and sha1.h removed. All SDK SHA-1 callers use the new BSD EVP digest adapter; SHA-224/256 PolarSSL implementation removed as well. Known-vector and CMS tests verify compatibility."
+    },
+    {
+      "id": "A04",
+      "status": "resolved",
+      "scopes": [
+        "binary"
+      ],
+      "summary": "Corresponding source/relinking materials and the FreeType alternative licence selection must be prepared for the released build",
+      "resolution": "FreeType FTL selected. scripts/prepare-source-package.py collects exact corresponding application/library source, all 13 locked upstream source archives, build recipes and unsigned application fingerprints. Each binary distribution must carry its matching package and pass check-publication.py --release."
+    }
+  ],
+  "assets": [
+    {
+      "path": "CIE ID/Fonts/Allura-Regular.ttf",
+      "sha256": "c70712358a4689043eb90740fe1e65273fec07df4ac384163721c047d206abad",
+      "license": "OFL-1.1",
+      "version": "1.005",
+      "notice": "LICENSES/allura/COPYRIGHT.txt"
+    }
+  ],
+  "freetype_license_choice": "FTL",
+  "replacement_manifest": "scripts/replaced-legacy-sources.json",
+  "openssl_support": {
+    "series": "3.5 LTS",
+    "supported_until": "2030-04-08",
+    "verified_version": "3.5.9",
+    "source": "https://openssl-library.org/source/"
+  }
+}

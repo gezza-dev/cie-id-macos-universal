@@ -1,0 +1,21 @@
+// Native dependencies are prepared by scripts/build-native-app.py.
+CIE_NATIVE_ARCH = arm64
+CIE_APP_VERSION = 1.5.0
+CURRENT_PROJECT_VERSION = 33
+ENABLE_DEBUG_DYLIB[config=Release] = NO
+CODE_SIGN_INJECT_BASE_ENTITLEMENTS[config=Release] = NO
+CIE_NATIVE_PREFIX = $(PROJECT_DIR)/.build/xcode-native/$(CIE_NATIVE_ARCH)
+ARCHS = $(CIE_NATIVE_ARCH)
+EXCLUDED_ARCHS =
+MACOSX_DEPLOYMENT_TARGET = 12.0
+ONLY_ACTIVE_ARCH = NO
+HEADER_SEARCH_PATHS = $(inherited) "$(CIE_NATIVE_PREFIX)/include"
+LIBRARY_SEARCH_PATHS = $(inherited) "$(CIE_NATIVE_PREFIX)/lib"
+GCC_PREPROCESSOR_DEFINITIONS = $(inherited) CRYPTOPP_DISABLE_ASM=1 'CIE_BUILD_APP_GROUP_ID="$(CIE_APP_GROUP_ID)"'
+LD_RUNPATH_SEARCH_PATHS = $(inherited) @executable_path/../Frameworks @loader_path/../Frameworks
+
+// Override these settings in the untracked LocalSigning.xcconfig.
+CIE_BUNDLE_ID = org.cieid.fork.CIEID
+CIE_APP_GROUP_ID = $(DEVELOPMENT_TEAM).$(CIE_BUNDLE_ID)
+CODE_SIGN_IDENTITY = Apple Development
+#include? "LocalSigning.xcconfig"

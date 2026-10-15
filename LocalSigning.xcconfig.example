@@ -1,0 +1,6 @@
+// Copy to LocalSigning.xcconfig; use the OU (Team ID) from your certificate.
+DEVELOPMENT_TEAM = YOURTEAMID
+CIE_BUNDLE_ID = com.example.CIEID.Development
+// macOS team-prefixed groups do not require portal registration.
+CIE_APP_GROUP_ID = $(DEVELOPMENT_TEAM).$(CIE_BUNDLE_ID)
+CODE_SIGN_IDENTITY = Apple Development
