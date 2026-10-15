@@ -144,7 +144,7 @@ def main():
             build["build_environment"]["identity_settings"]["DEVELOPMENT_TEAM"], builder.ARCHITECTURES, True)
         builder.native.run("spctl", "--assess", "--type", "execute", "--verbose=4", extracted)
     source_archive = ROOT / "dist/release/universal2/cie-corresponding-source.tar.gz"
-    delivered_sources = destination / ("CIE-ID-" + version + "-corresponding-source.tar.gz")
+    delivered_sources = destination / "CIE-ID-corresponding-source.tar.gz"
     shutil.copyfile(source_archive, delivered_sources)
     hashes = {path.name: sha256(path) for path in (final_zip, delivered_sources)}
     (destination / "SHA256SUMS.txt").write_text("".join(value + "  " + name + "\n" for name, value in hashes.items()))

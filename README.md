@@ -19,21 +19,21 @@ La documentazione ufficiale è disponibile su
 e il prodotto ufficiale su
 [Mac App Store](https://apps.apple.com/it/app/software-cie/id6476510798?mt=12).
 
-## Scaricare CIE ID 1.5.2
+## Scaricare CIE ID
 
-La [release v1.5.2 (build 35)](https://github.com/gezza-dev/cie-id-macos-universal/releases/tag/v1.5.2)
+L’[ultima release disponibile](https://github.com/gezza-dev/cie-id-macos-universal/releases/latest)
 contiene l'app Universal e i materiali corrispondenti:
 
-- [DMG per installare CIE ID](https://github.com/gezza-dev/cie-id-macos-universal/releases/download/v1.5.2/CIE-ID-1.5.2-universal2.dmg),
+- [DMG per installare CIE ID](https://github.com/gezza-dev/cie-id-macos-universal/releases/latest/download/CIE-ID-Universal.dmg),
   firmato con **Developer ID Application** e **notarizzato da Apple**.
-- [Istruzioni di installazione in italiano](https://github.com/gezza-dev/cie-id-macos-universal/releases/download/v1.5.2/INSTALLAZIONE.txt),
+- [Istruzioni di installazione in italiano](https://github.com/gezza-dev/cie-id-macos-universal/releases/latest/download/INSTALLAZIONE.txt),
   consultabili anche offline.
-- [Sorgenti corrispondenti completi](https://github.com/gezza-dev/cie-id-macos-universal/releases/download/v1.5.2/CIE-ID-1.5.2-corresponding-source.tar.gz),
+- [Sorgenti corrispondenti completi](https://github.com/gezza-dev/cie-id-macos-universal/releases/latest/download/CIE-ID-corresponding-source.tar.gz),
   inclusi gli archivi dei sorgenti delle 13 dipendenze e le ricette di build.
-- [Checksum SHA-256](https://github.com/gezza-dev/cie-id-macos-universal/releases/download/v1.5.2/SHA256SUMS.txt)
+- [Checksum SHA-256](https://github.com/gezza-dev/cie-id-macos-universal/releases/latest/download/SHA256SUMS.txt)
   per verificare i tre allegati precedenti.
 
-## Novità della versione 1.5.2
+## Guida inclusa nell’app
 
 - **Guida del fork inclusa nell'app**, consultabile anche offline dal menu
   **Tutorial**, con istruzioni per associazione, firma, verifica, PIN/PUK e browser.
@@ -49,12 +49,12 @@ contiene l'app Universal e i materiali corrispondenti:
 - L'accesso a Internet è necessario per interrogare i servizi di revoca
   durante la verifica delle firme.
 
-1. Scaricare il [DMG della release v1.5.2](https://github.com/gezza-dev/cie-id-macos-universal/releases/download/v1.5.2/CIE-ID-1.5.2-universal2.dmg).
+1. Scaricare il [DMG dell’ultima release](https://github.com/gezza-dev/cie-id-macos-universal/releases/latest/download/CIE-ID-Universal.dmg).
 2. Chiudere eventuali copie di CIE ID in esecuzione e aprire il DMG.
 3. Trascinare **CIE ID.app** sul collegamento **Applicazioni** presente
    nella finestra. Se esiste già un'app con lo stesso nome, verificare
    quale versione conservare prima di confermare una sostituzione.
-4. Espellere il volume **CIE ID 1.5.2**.
+4. Espellere il volume del DMG.
 5. Avviare **CIE ID** dalla cartella **Applicazioni** e seguire la procedura
    di associazione della carta.
 
@@ -73,12 +73,13 @@ shasum -a 256 -c SHA256SUMS.txt
 Ogni file deve riportare `OK`. Per ricompilare la versione distribuita,
 usare l'archivio **corresponding-source.tar.gz**: i download automatici
 GitHub **Source code (zip/tar.gz)** non includono gli archivi delle dipendenze.
-Il tag `v1.5.2` identifica lo snapshot usato per quella release; il ramo
-`main` può contenere aggiornamenti successivi, compresa questa documentazione.
+Il tag associato a ciascuna release identifica lo snapshot usato per quella
+distribuzione; il ramo `main` può contenere aggiornamenti successivi, compresa
+questa documentazione.
 
 ## Stato del progetto
 
-- Release **1.5.2 (build 35)** Universal disponibile per Apple Silicon e Intel.
+- App Universal disponibile per Apple Silicon e Intel.
 - Compilazione e test software di entrambe le architetture verificati con
   Xcode 27 e macOS 26.7.1 su Apple Silicon; i test Intel sono eseguiti tramite
   Rosetta e non sostituiscono il collaudo su un Mac Intel reale.
@@ -139,7 +140,7 @@ FEA né l'idoneità della build per uso produttivo.
 
 ## Screenshots
 
-Alcune schermate di CIE ID **v1.5.1** su macOS.
+Alcune schermate di CIE ID su macOS.
 
 **Home** — associazione della CIE tramite il PIN.
 
@@ -379,7 +380,7 @@ adattatore PoDoFo sono documentate nel [README del SDK](cie_sign_sdk/README.md).
 `build-native-app.py --arch x86_64` prepara la variante Intel separata;
 `build-universal-app.py` prepara il bundle completo per entrambe le architetture.
 
-### Correzioni di sicurezza della versione 1.5.1
+### Sicurezza
 
 La verifica di revoca controlla firma, autorizzazione del risponditore,
 certificato richiesto e validità temporale delle risposte OCSP/CRL.

@@ -10,7 +10,7 @@ REQUISITI
 - Per utilizzare la CIE servono una carta e un lettore compatibile.
 
 INSTALLAZIONE
-1. Scarica CIE-ID-1.5.2-universal2.dmg dagli allegati della release.
+1. Scarica CIE-ID-Universal.dmg dagli allegati della release.
 2. Chiudi eventuali copie di CIE ID in esecuzione.
 3. Apri il DMG con un doppio clic.
 4. Trascina CIE ID.app sul collegamento Applicazioni presente nella finestra.
@@ -40,7 +40,7 @@ state eseguite per entrambe le architetture; il collaudo hardware su ogni
 modello di Mac, CIE e lettore resta distinto dalla notarizzazione Apple.
 
 SORGENTI E LICENZE
-CIE-ID-1.5.2-corresponding-source.tar.gz contiene i sorgenti corrispondenti
+CIE-ID-corresponding-source.tar.gz contiene i sorgenti corrispondenti
 alla build distribuita, gli archivi dei sorgenti delle dipendenze, le licenze
 e le istruzioni di ricompilazione/ricollegamento (Docs/REBUILDING.md).
 Conservare questo archivio insieme alla distribuzione binaria. L'inventario

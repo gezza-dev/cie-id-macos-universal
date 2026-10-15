@@ -11,6 +11,7 @@ import json
 import os
 from pathlib import Path
 import plistlib
+import shutil
 import subprocess
 import sys
 import tempfile
@@ -26,7 +27,8 @@ R = release.RECEIPTS
 build = json.loads((R / 'universal2-build.json').read_text())
 app = (ROOT / build['application']).resolve()
 version = plistlib.loads((app / 'Contents/Info.plist').read_bytes())['CFBundleShortVersionString']
-dmg = app.parent / ('CIE-ID-' + version + '-universal2.dmg')
+# Stable asset names keep /releases/latest/download links valid across releases.
+dmg = app.parent / 'CIE-ID-Universal.dmg'
 jobfile = R / 'universal2-dmg-notarization.json'
 parser = argparse.ArgumentParser(description=__doc__)
 parser.add_argument('mode', choices=['preview', 'prepare', 'submit', 'finalize'])
@@ -59,6 +61,7 @@ def stage_contents(stage):
     with DSStore.open(str(stage / '.DS_Store'), 'w+') as store:
         store['.']['vSrn'] = ('long', 1)
         store['.']['icvl'] = ('type', b'icnv')
+        store['.']['vstl'] = ('type', b'icnv')
         store['.']['bwsp'] = dict(ShowStatusBar=False, WindowBounds='{{240, 180}, {640, 420}}',
             ContainerShowSidebar=False, PreviewPaneVisibility=False, SidebarWidth=0,
             ShowTabView=False, ShowToolbar=False, ShowPathbar=False, ShowSidebar=False)
@@ -155,6 +158,7 @@ elif mode == 'finalize':
             assert os.readlink(mount / 'Applicazioni') == '/Applications'
             assert {p.name for p in mount.iterdir() if not p.name.startswith('.')} == {'CIE ID.app','Applicazioni'}
             with DSStore.open(str(mount / '.DS_Store'), 'r') as store:
+                assert store['.']['vstl'] == ('type', b'icnv')
                 assert store['.']['bwsp']['WindowBounds'] == '{{240, 180}, {640, 420}}'
                 assert store['CIE ID.app']['Iloc'] == (175, 155)
                 assert store['Applicazioni']['Iloc'] == (465, 155)
@@ -171,7 +175,12 @@ elif mode == 'finalize':
     for name, digest in delivery['artifacts'].items():
         if sha256(app.parent / name) != digest:
             raise RuntimeError('Existing artifact changed: ' + name)
-    delivery['artifacts'][dmg.name] = sha256(dmg)
+    instructions = ROOT / 'Docs/releases' / version / 'INSTALLAZIONE.txt'
+    delivered_instructions = app.parent / 'INSTALLAZIONE.txt'
+    shutil.copyfile(instructions, delivered_instructions)
+    delivered_sources = app.parent / 'CIE-ID-corresponding-source.tar.gz'
+    delivery['artifacts'] = {path.name: sha256(path)
+        for path in (dmg, delivered_sources, delivered_instructions)}
     delivery['disk_image'] = dict(file=dmg.name, notarization_id=job['id'],
         notarization_status='Accepted', stapled=True, gatekeeper='accepted', format='UDZO',
         applications_link='Applicazioni -> /Applications', verified_after_mount=True,

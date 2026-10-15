@@ -14,7 +14,7 @@ Fork indipendente di [italia/cie-middleware-macos](https://github.com/italia/cie
 
 ### Installazione
 
-1. Scaricare **CIE-ID-1.5.2-universal2.dmg**.
+1. Scaricare **CIE-ID-Universal.dmg**.
 2. Chiudere CIE ID e aprire il DMG.
 3. Trascinare **CIE ID.app** sul collegamento **Applicazioni**. Se esiste un'app omonima, verificare quale copia conservare prima di sostituirla.
 4. Espellere il volume e avviare CIE ID da Applicazioni.
@@ -26,8 +26,8 @@ App, middleware ed estensione CryptoTokenKit sono firmati con **Developer ID App
 
 ### Materiali allegati
 
-- **CIE-ID-1.5.2-universal2.dmg**: app Universal firmata e notarizzata, con collegamento ad Applicazioni.
-- **CIE-ID-1.5.2-corresponding-source.tar.gz**: sorgenti corrispondenti di app, SDK, middleware, estensione e delle 13 dipendenze, con ricette di ricompilazione e ricollegamento.
+- **CIE-ID-Universal.dmg**: app Universal firmata e notarizzata, con collegamento ad Applicazioni.
+- **CIE-ID-corresponding-source.tar.gz**: sorgenti corrispondenti di app, SDK, middleware, estensione e delle 13 dipendenze, con ricette di ricompilazione e ricollegamento.
 - **INSTALLAZIONE.txt**: istruzioni in italiano.
 - **SHA256SUMS.txt**: checksum dei tre allegati precedenti.
 
