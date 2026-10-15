@@ -134,17 +134,21 @@ FEA né l'idoneità della build per uso produttivo.
 
 Alcune schermate di CIE ID **v1.5.1** su macOS.
 
-**Firma elettronica** — selezione o trascinamento del documento da firmare.
+**Home** — associazione della CIE tramite il PIN.
 
-![CIE ID: schermata iniziale della firma elettronica](Docs/screenshots/firma-elettronica.jpg)
+![CIE ID: Home con la procedura di associazione della CIE](Docs/screenshots/1-cie-id-home.png)
 
-**Cambio PIN** — modulo per aggiornare il PIN della CIE.
+**Firma Elettronica** — selezione o trascinamento del documento da firmare.
 
-![CIE ID: schermata Cambia PIN con i campi vuoti](Docs/screenshots/cambia-pin.jpg)
+![CIE ID: schermata iniziale della firma elettronica](Docs/screenshots/2-cie-id-firma-elettronica.png)
 
-**Tutorial** — scelta del browser per consultare le istruzioni di utilizzo.
+**Cambia PIN** — modulo per aggiornare il PIN della CIE.
 
-![CIE ID: tutorial con la scelta tra Safari, Chrome e Firefox](Docs/screenshots/tutorial.jpg)
+![CIE ID: schermata Cambia PIN con i campi vuoti](Docs/screenshots/3-cie-id-cambia-pin.png)
+
+**Sblocca Carta** — sblocco della CIE tramite PUK e impostazione di un nuovo PIN.
+
+![CIE ID: schermata Sblocca Carta con i campi PUK e nuovo PIN vuoti](Docs/screenshots/4-cie-id-sblocca-carta.png)
 
 ## Licenze, attribuzioni e pubblicazione
 
