@@ -4,7 +4,7 @@ Fork indipendente e sperimentale di
 [italia/cie-middleware-macos](https://github.com/italia/cie-middleware-macos),
 con app macOS, middleware PKCS#11, estensione CryptoTokenKit e SDK di firma
 compilati nativamente per **Apple Silicon (arm64) e Intel (x86_64)** in
-un unico bundle **Universal 2**.
+un unico bundle **Universal**.
 
 **Questo fork non è un prodotto ufficiale dell'Istituto Poligrafico e Zecca dello Stato Italiano, non è approvato o
 supportato da IPZS e non sostituisce la distribuzione ufficiale.** I nomi,
@@ -18,12 +18,11 @@ La documentazione ufficiale è disponibile su
 [Docs Italia](https://docs.italia.it/italia/cie/cie-middleware-windows-docs/it/master/index.html)
 e il prodotto ufficiale su
 [Mac App Store](https://apps.apple.com/it/app/software-cie/id6476510798?mt=12).
-Questi collegamenti riguardano l'upstream, non le build del fork.
 
 ## Scaricare CIE ID 1.5.1
 
 La [release v1.5.1 (build 34)](https://github.com/gezza-dev/cie-id-macos-universal/releases/tag/v1.5.1)
-contiene l'app Universal 2 e i materiali corrispondenti:
+contiene l'app Universal e i materiali corrispondenti:
 
 - [DMG per installare CIE ID](https://github.com/gezza-dev/cie-id-macos-universal/releases/download/v1.5.1/CIE-ID-1.5.1-universal2.dmg),
   firmato con **Developer ID Application** e **notarizzato da Apple**.
@@ -33,10 +32,6 @@ contiene l'app Universal 2 e i materiali corrispondenti:
   inclusi gli archivi dei sorgenti delle 13 dipendenze e le ricette di build.
 - [Checksum SHA-256](https://github.com/gezza-dev/cie-id-macos-universal/releases/download/v1.5.1/SHA256SUMS.txt)
   per verificare i tre allegati precedenti.
-
-App e DMG includono il ticket di notarizzazione. Finché il repository è
-privato, la release e i download sono accessibili soltanto agli utenti
-autorizzati.
 
 ## Requisiti e installazione
 
