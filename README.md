@@ -130,6 +130,22 @@ La grafica può differire dal fork PoDoFo originale; i dati grafometrici
 privati senza sorgenti vengono rifiutati. Il porting non certifica i flussi
 FEA né l'idoneità della build per uso produttivo.
 
+## Screenshots
+
+Alcune schermate di CIE ID **v1.5.1** su macOS.
+
+**Firma elettronica** — selezione o trascinamento del documento da firmare.
+
+![CIE ID: schermata iniziale della firma elettronica](Docs/screenshots/firma-elettronica.jpg)
+
+**Cambio PIN** — modulo per aggiornare il PIN della CIE.
+
+![CIE ID: schermata Cambia PIN con i campi vuoti](Docs/screenshots/cambia-pin.jpg)
+
+**Tutorial** — scelta del browser per consultare le istruzioni di utilizzo.
+
+![CIE ID: tutorial con la scelta tra Safari, Chrome e Firefox](Docs/screenshots/tutorial.jpg)
+
 ## Licenze, attribuzioni e pubblicazione
 
 [`LICENSE.txt`](LICENSE.txt) conserva senza modifiche la licenza BSD
