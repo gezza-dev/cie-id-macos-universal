@@ -7,6 +7,7 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		A25151600000000000000001 /* Guida.html in Resources */ = {isa = PBXBuildFile; fileRef = A25151600000000000000002 /* Guida.html */; };
 		0883C2E4251C94290054055E /* CarouselView.m in Sources */ = {isa = PBXBuildFile; fileRef = 0883C2DE251C94290054055E /* CarouselView.m */; };
 		0883C2E5251C94290054055E /* CarouselCard.xib in Resources */ = {isa = PBXBuildFile; fileRef = 0883C2DF251C94290054055E /* CarouselCard.xib */; };
 		0883C2E6251C94290054055E /* CarouselView.xib in Resources */ = {isa = PBXBuildFile; fileRef = 0883C2E1251C94290054055E /* CarouselView.xib */; };
@@ -277,6 +278,8 @@
 /* End PBXCopyFilesBuildPhase section */
 
 /* Begin PBXFileReference section */
+		A25151600000000000000002 /* Guida.html */ = {isa = PBXFileReference; lastKnownFileType = text.html; path = Guida.html; sourceTree = "<group>"; };
+		A25151600000000000000003 /* HelpNavigation.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = HelpNavigation.h; sourceTree = "<group>"; };
 		0883C2DE251C94290054055E /* CarouselView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = CarouselView.m; sourceTree = "<group>"; };
 		0883C2DF251C94290054055E /* CarouselCard.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = CarouselCard.xib; sourceTree = "<group>"; };
 		0883C2E0251C94290054055E /* CarouselView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CarouselView.h; sourceTree = "<group>"; };
@@ -853,6 +856,8 @@
 		E544F56421BFAFC60038B2CA /* CIE ID */ = {
 			isa = PBXGroup;
 			children = (
+				A25151600000000000000002 /* Guida.html */,
+				A25151600000000000000003 /* HelpNavigation.h */,
 				60E2DCA92B74E5D70030D523 /* MessageViewController.h */,
 				60E2DCA82B74E5D70030D523 /* MessageViewController.m */,
 				60E2DCA72B74E5D70030D523 /* MessageViewController.xib */,
@@ -1485,6 +1490,7 @@
 			"isa" = "PBXResourcesBuildPhase";
 			"buildActionMask" = "2147483647";
 			"files" = (
+				A25151600000000000000001 /* Guida.html in Resources */,
 				"E544F56C21BFAFC90038B2CA",
 				"E544F56F21BFAFC90038B2CA",
 				"60E2DCAB2B74E5D70030D523",

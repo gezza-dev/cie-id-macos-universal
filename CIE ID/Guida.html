@@ -1,0 +1,149 @@
+<!doctype html>
+<!-- SPDX-License-Identifier: BSD-3-Clause -->
+<html lang="it">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta http-equiv="Content-Security-Policy" content="default-src 'none'; style-src 'unsafe-inline'; base-uri 'none'; form-action 'none'">
+  <title>Guida CIE ID per macOS</title>
+  <style>
+    :root { color-scheme: light; font: 17px/1.6 -apple-system, BlinkMacSystemFont, sans-serif; color: #242424; background: #fff; }
+    body { margin: 0; padding: 24px 30px 48px; }
+    main { max-width: 860px; margin: auto; }
+    h1 { font-size: 28px; line-height: 1.25; margin-top: 0; }
+    h2 { font-size: 22px; margin: 32px 0 10px; scroll-margin-top: 16px; }
+    h3 { font-size: 18px; margin-bottom: 6px; }
+    p, li { overflow-wrap: anywhere; }
+    li { margin: 8px 0; }
+    a { color: #2454a6; text-decoration: underline; overflow-wrap: anywhere; }
+    a:focus-visible { outline: 3px solid #2454a6; outline-offset: 3px; }
+    nav, .note { background: #f1f4f9; padding: 16px 20px; border-radius: 10px; }
+    nav ul { margin: 0; padding-left: 20px; }
+    code { font-size: .9em; overflow-wrap: anywhere; }
+    @media (max-width: 480px) { body { padding: 18px 16px 32px; } }
+  </style>
+</head>
+<body>
+<main>
+  <h1>Guida CIE ID per macOS</h1>
+  <p>Questa guida riguarda il <strong>fork indipendente CIE ID per macOS Universal</strong>,
+    per Mac Apple Silicon e Intel. Il fork non è un prodotto ufficiale dell'Istituto
+    Poligrafico e Zecca dello Stato Italiano e non è supportato da IPZS.</p>
+  <p>La guida è inclusa nell'app ed è consultabile anche senza connessione.
+    I collegamenti ai siti web si aprono nel browser predefinito e richiedono Internet.</p>
+  <nav aria-label="Indice della guida">
+    <ul>
+      <li><a href="#iniziare">Installazione e associazione della CIE</a></li>
+      <li><a href="#firma">Firmare un documento</a></li>
+      <li><a href="#verifica">Verificare una firma</a></li>
+      <li><a href="#codici">Cambiare il PIN e sbloccare la carta</a></li>
+      <li><a href="#browser">Accedere ai servizi con il browser</a></li>
+      <li><a href="#assistenza">Problemi comuni e collegamenti utili</a></li>
+    </ul>
+  </nav>
+
+  <section id="iniziare">
+    <h2>Installazione e associazione della CIE</h2>
+    <ol>
+      <li>Scarica il DMG dalla <a href="https://github.com/gezza-dev/cie-id-macos-universal/releases">pagina delle release del fork</a>.
+        Aprilo e trascina <strong>CIE ID.app</strong> in <strong>Applicazioni</strong>.
+        Per usare l'app distribuita non occorre Xcode.</li>
+      <li>Collega un lettore di smart card contactless compatibile e appoggia la CIE sul lettore.</li>
+      <li>Avvia l'app e, dalla <strong>Home</strong>, segui la procedura per abbinare la carta.
+        Per la prima associazione occorre il PIN completo di otto cifre, formato dalle due metà ricevute con la CIE.</li>
+      <li>Attendi il completamento senza rimuovere la carta. Per le operazioni successive
+        inserisci le cifre del PIN richieste dalla schermata.</li>
+    </ol>
+    <p>Il fork ha identificativi e cache separati dall'app ufficiale: una carta già associata
+      a quest'ultima può richiedere una nuova associazione nel fork.</p>
+  </section>
+
+  <section id="firma">
+    <h2>Firmare un documento</h2>
+    <ol>
+      <li>Apri <strong>Firma Elettronica</strong> e scegli la CIE da utilizzare;
+        puoi anche seguire il flusso per una CIE non associata.</li>
+      <li>Seleziona un documento o trascinalo nell'area indicata.</li>
+      <li>Scegli <strong>PAdES</strong> per firmare un PDF oppure <strong>CAdES</strong>
+        per ottenere un file con estensione <code>.p7m</code>, secondo le opzioni disponibili.</li>
+      <li>Per la firma PDF puoi usare il segno grafico opzionale e controllarne l'anteprima.</li>
+      <li>Con la CIE sul lettore, inserisci il PIN richiesto, conferma la firma
+        e scegli dove salvare il documento. Attendi il messaggio di completamento.</li>
+    </ol>
+    <p>Il segno grafico è un elemento visivo: da solo non dimostra la validità di una firma elettronica.</p>
+  </section>
+
+  <section id="verifica">
+    <h2>Verificare una firma</h2>
+    <p>Apri <strong>Verifica Firma</strong> e seleziona un PDF firmato o un file <code>.p7m</code>.
+      L'app mostra i firmatari e distingue tre risultati:</p>
+    <ul>
+      <li><strong>Firma:</strong> esito del controllo crittografico sul documento.</li>
+      <li><strong>Certificato:</strong> controllo del periodo di validità del certificato.</li>
+      <li><strong>Revoca:</strong> stato restituito dai servizi di revoca, se raggiungibili.</li>
+    </ul>
+    <p>Un servizio di revoca non raggiungibile non dimostra che la firma sia crittograficamente
+      non valida: indica che il controllo della revoca non è stato completato.
+      Verifica la connessione e, se necessario, il proxy in <strong>Impostazioni</strong>.</p>
+    <p>Per un file <code>.p7m</code> puoi estrarre il documento contenuto quando il comando
+      <strong>Estrai</strong> è disponibile. I risultati mostrati non costituiscono
+      una certificazione dell'idoneità del documento per uno specifico uso.</p>
+  </section>
+
+  <section id="codici">
+    <h2>Cambiare il PIN e sbloccare la carta</h2>
+    <h3>Cambia PIN</h3>
+    <p>Appoggia la CIE sul lettore, apri <strong>Cambia PIN</strong>, inserisci il PIN corrente
+      e il nuovo PIN, quindi conferma il nuovo codice e avvia l'operazione.
+      Per cambiare un PIN conosciuto non occorre il PUK.</p>
+    <h3>Sblocca Carta</h3>
+    <p>Se il PIN è bloccato, apri <strong>Sblocca Carta</strong>, inserisci il PUK della CIE,
+      scegli un nuovo PIN e confermalo. Attendi il completamento senza spostare la carta.</p>
+    <p class="note">PIN e PUK sono dati personali di sicurezza. Non condividerli e non inserirli
+      in segnalazioni o screenshot. Se non conosci un codice, evita tentativi ripetuti e consulta
+      le indicazioni ufficiali per il recupero.</p>
+  </section>
+
+  <section id="browser">
+    <h2>Accedere ai servizi con il browser</h2>
+    <p>Il browser serve per accedere ai siti che offrono <strong>Entra con CIE</strong>.
+      Non è necessario scegliere un browser per firmare o verificare documenti nell'app.</p>
+    <p>Dopo l'associazione, lascia la CIE sul lettore e segui sul sito del servizio
+      il percorso di accesso con carta e lettore. Se richiesto, scegli il certificato della CIE
+      e inserisci il PIN nella finestra di autenticazione.</p>
+    <h3>Safari e Chrome</h3>
+    <p>Il fork include l'estensione smart card <strong>CIEToken</strong> basata su CryptoTokenKit.
+      Se macOS ne richiede l'attivazione, autorizzala nelle Impostazioni di Sistema.
+      La disponibilità dell'autenticazione dipende anche dal browser e dal servizio utilizzato.</p>
+    <h3>Firefox e programmi che richiedono PKCS#11</h3>
+    <p>Se il programma richiede di configurare manualmente un modulo PKCS#11,
+      il middleware del fork si trova all'interno del bundle dell'app:</p>
+    <p><code>/Applications/CIE ID.app/Contents/Frameworks/libcie-pkcs11.dylib</code></p>
+    <p>Adatta il percorso se hai installato l'app in un'altra cartella.
+      In Firefox la gestione dei moduli si trova nelle impostazioni dei certificati,
+      sotto <strong>Dispositivi di sicurezza</strong>; le voci possono variare con la versione.
+      Evita di caricare contemporaneamente più copie dello stesso middleware.</p>
+    <p>Questa distribuzione comprende app, middleware ed estensione nel medesimo bundle;
+      non installa un'app separata CIE ID BAR e non richiede il vecchio percorso <code>/Library/ipzs</code>.</p>
+  </section>
+
+  <section id="assistenza">
+    <h2>Problemi comuni e collegamenti utili</h2>
+    <ul>
+      <li><strong>Carta non rilevata:</strong> controlla lettore e collegamenti,
+        riposiziona la CIE e verifica che un'altra app non stia usando la carta.</li>
+      <li><strong>Errore di firma:</strong> leggi il messaggio completo, verifica il PIN richiesto
+        e prova a salvare in una cartella accessibile.</li>
+      <li><strong>Errore di rete nella verifica:</strong> controlla connessione e proxy.
+        I servizi dei certificati possono essere temporaneamente indisponibili.</li>
+    </ul>
+    <p>Per il fork, consulta il <a href="https://github.com/gezza-dev/cie-id-macos-universal">repository e il README</a>
+      oppure apri una <a href="https://github.com/gezza-dev/cie-id-macos-universal/issues">segnalazione</a>,
+      evitando di pubblicare codici, dati della carta, documenti riservati o log non controllati.</p>
+    <p>Per il prodotto ufficiale e le informazioni istituzionali sulla CIE, consulta la pagina
+      <a href="https://www.cartaidentita.interno.gov.it/info-utili/software-cie-2/">Software CIE sul sito del Ministero dell'Interno</a>.
+      Le istruzioni ufficiali possono riferirsi a una distribuzione diversa da questo fork.</p>
+  </section>
+</main>
+</body>
+</html>

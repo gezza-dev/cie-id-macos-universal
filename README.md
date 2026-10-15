@@ -106,7 +106,8 @@ sono in italiano. Le funzioni disponibili comprendono:
 - **Estrazione del documento** contenuto nei file `.p7m`.
 - **Integrazione smart card** tramite middleware **PKCS#11** ed estensione
   **CryptoTokenKit**, inclusi nel bundle per entrambe le architetture.
-- **Impostazioni di proxy e log**, tutorial e aiuto integrati.
+- **Impostazioni di proxy e log**, guida del fork inclusa nell'app e consultabile
+  anche offline, con collegamenti esterni aperti nel browser predefinito, e aiuto integrato.
 
 La verifica distingue uno stato di revoca sconosciuto o un servizio non
 raggiungibile da una firma crittograficamente non valida.

@@ -58,3 +58,8 @@ add_executable(cie_presentation_tests tests/presentation_tests.mm)
 target_compile_options(cie_presentation_tests PRIVATE -fobjc-arc)
 target_link_libraries(cie_presentation_tests PRIVATE "-framework Cocoa")
 add_test(NAME cie_presentation_tests COMMAND cie_presentation_tests)
+
+add_executable(cie_help_navigation_tests tests/help_navigation_tests.mm)
+target_compile_options(cie_help_navigation_tests PRIVATE -fobjc-arc)
+target_link_libraries(cie_help_navigation_tests PRIVATE "-framework Foundation" "-framework WebKit")
+add_test(NAME cie_help_navigation_tests COMMAND cie_help_navigation_tests)

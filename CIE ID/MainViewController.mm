@@ -8,6 +8,7 @@
 
 #import "MainViewController.h"
 #import "AppPresentation.h"
+#import "HelpNavigation.h"
 #import <IOKit/IOKitLib.h>
 #import <CommonCrypto/CommonDigest.h>
 #import "ProxyInfoManager.h"
@@ -49,7 +50,7 @@ struct logLevels {
     AppLogLevel logLevelLib;
 };
 
-@interface MainViewController() <CarouselViewDelegate, NSTableViewDataSource, NSTableViewDelegate> {
+@interface MainViewController() <CarouselViewDelegate, NSTableViewDataSource, NSTableViewDelegate, WKNavigationDelegate, WKUIDelegate> {
     Cie *removingCie;
 }
 
@@ -204,6 +205,10 @@ AppLogger *logger;
     [logger info:[NSString stringWithFormat:@"[I] Livello di log applicazione: %ld", [self logLevelApp]]];
     [logger info:[NSString stringWithFormat:@"[I] Livello di log libreria: %ld", [self logLevelLib]]];
     [logger info:@"Inizializzo view principale"];
+    self.helpWebView.navigationDelegate = self;
+    self.helpWebView.UIDelegate = self;
+    self.infoWebView.navigationDelegate = self;
+    self.infoWebView.UIDelegate = self;
     
     [_viewSignatureSelectOp updateLayer];
     [self addSubviewToMainCustomView:_homeFirstPageView];
@@ -1534,8 +1539,40 @@ CK_RV completedCallback(string& PAN,
         ChangeView *cG = [ChangeView getInstance];
         [cG showSubView:HELP_PAGE];
         
-        [self.helpWebView loadRequest:[NSURLRequest requestWithURL:[NSURL URLWithString:@"https://idserver.servizicie.interno.gov.it/idp/tutorial_mac.jsp"]]];
+        NSURL *guide = [NSBundle.mainBundle URLForResource:@"Guida" withExtension:@"html"];
+        if (guide) {
+            [self.helpWebView loadFileURL:guide allowingReadAccessToURL:guide];
+        } else {
+            [self.helpWebView loadHTMLString:@"<html lang='it'><body><p>La guida inclusa nell'app non è disponibile.</p></body></html>" baseURL:nil];
+            [self showMessage:@"La guida inclusa nell'app non è stata trovata. Reinstalla una copia completa di CIE ID."
+                    withTitle:@"Guida non disponibile" exitAfter:false];
+        }
     });
+}
+
+- (void)openExternalHelpURL:(NSURL *)url {
+    if (![NSWorkspace.sharedWorkspace openURL:url]) {
+        [self showMessage:[NSString stringWithFormat:@"Non è stato possibile aprire il collegamento nel browser o nell'app predefinita:\n%@", url.absoluteString]
+                withTitle:@"Collegamento non aperto" exitAfter:false];
+    }
+}
+
+- (void)webView:(WKWebView *)webView decidePolicyForNavigationAction:(WKNavigationAction *)action
+    decisionHandler:(void (^)(WKNavigationActionPolicy))decisionHandler {
+    NSURL *guide = [NSBundle.mainBundle URLForResource:@"Guida" withExtension:@"html"];
+    CIEHelpNavigationPolicy policy = CIEHelpPolicy(action.request.URL,
+        action.navigationType, action.targetFrame != nil, guide);
+    // Cancel before handing the link to macOS, including target="_blank" links.
+    decisionHandler(policy == CIEHelpNavigationAllow ? WKNavigationActionPolicyAllow : WKNavigationActionPolicyCancel);
+    if (policy == CIEHelpNavigationOpenExternally) [self openExternalHelpURL:action.request.URL];
+}
+
+- (WKWebView *)webView:(WKWebView *)webView createWebViewWithConfiguration:(WKWebViewConfiguration *)configuration
+    forNavigationAction:(WKNavigationAction *)action windowFeatures:(WKWindowFeatures *)windowFeatures {
+    NSURL *guide = [NSBundle.mainBundle URLForResource:@"Guida" withExtension:@"html"];
+    if (CIEHelpPolicy(action.request.URL, action.navigationType, NO, guide) == CIEHelpNavigationOpenExternally)
+        [self openExternalHelpURL:action.request.URL];
+    return nil;
 }
 
 - (void)showInfoPage {
