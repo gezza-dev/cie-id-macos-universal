@@ -158,6 +158,10 @@ Alcune schermate di CIE ID su macOS.
 
 ![CIE ID: schermata Sblocca Carta con i campi PUK e nuovo PIN vuoti](Docs/screenshots/4-cie-id-sblocca-carta.png)
 
+**Tutorial** — guida del fork inclusa nell'app e consultabile anche offline.
+
+![CIE ID: Tutorial con la guida per macOS e l'indice delle istruzioni](Docs/screenshots/5-cie-id-tutorial.png)
+
 ## Licenze, attribuzioni e pubblicazione
 
 [`LICENSE.txt`](LICENSE.txt) conserva senza modifiche la licenza BSD
