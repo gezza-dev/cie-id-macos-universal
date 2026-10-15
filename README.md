@@ -40,9 +40,6 @@ contiene l'app Universal e i materiali corrispondenti:
 - L'accesso a Internet è necessario per interrogare i servizi di revoca
   durante la verifica delle firme.
 
-Per utilizzare l'app distribuita nel DMG non occorre installare Xcode né
-compilare il progetto.
-
 1. Scaricare il [DMG della release v1.5.1](https://github.com/gezza-dev/cie-id-macos-universal/releases/download/v1.5.1/CIE-ID-1.5.1-universal2.dmg).
 2. Chiudere eventuali copie di CIE ID in esecuzione e aprire il DMG.
 3. Trascinare **CIE ID.app** sul collegamento **Applicazioni** presente
