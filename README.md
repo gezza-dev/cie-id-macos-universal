@@ -12,8 +12,6 @@ i copyright e gli avvisi del progetto originale sono conservati per
 attribuzione. L'interfaccia conserva risorse e nomi storici: ciò non implica
 un'autorizzazione all'uso promozionale dei marchi né un'approvazione del fork.
 
-Il progetto deriva dal commit upstream
-[`43da456fb3002e34beccda73b9bc4b149acae534`](https://github.com/italia/cie-middleware-macos/commit/43da456fb3002e34beccda73b9bc4b149acae534).
 La documentazione ufficiale è disponibile su
 [Docs Italia](https://docs.italia.it/italia/cie/cie-middleware-windows-docs/it/master/index.html)
 e il prodotto ufficiale su
