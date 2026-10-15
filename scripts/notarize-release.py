@@ -1,6 +1,6 @@
 #!/usr/bin/env python3
 # SPDX-License-Identifier: BSD-3-Clause
-"""Notarize, staple and package a verified Developer ID Universal 2 Release.
+"""Notarize, staple and package a verified Developer ID Universal Release.
 
 Only a keychain profile name is accepted: passwords and private API keys never
 enter command arguments, receipts, source packages or distribution archives.
@@ -42,7 +42,7 @@ def check_build(receipt, app):
     environment = receipt["build_environment"]
     if (environment.get("signing_kind") != "developer-id" or
             environment["configuration"] != "Release" or environment["architecture"] != "universal2"):
-        raise RuntimeError("Build a Developer ID Release Universal 2 first")
+        raise RuntimeError("Build a Developer ID Release Universal first")
     inventory = builder.inventory(app)
     binaries = [path for path, (kind, _) in inventory.items() if kind == "macho"]
     info = plistlib.loads((app / "Contents/Info.plist").read_bytes())

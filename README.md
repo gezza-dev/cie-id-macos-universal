@@ -1,4 +1,4 @@
-# CIE ID per macOS — Universal 2
+# CIE ID per macOS — Universal
 
 Fork indipendente e sperimentale di
 [italia/cie-middleware-macos](https://github.com/italia/cie-middleware-macos),
@@ -72,7 +72,7 @@ Il tag `v1.5.1` identifica lo snapshot usato per quella release; il ramo
 
 ## Stato del progetto
 
-- Release **1.5.1 (build 34)** Universal 2 disponibile per Apple Silicon e Intel.
+- Release **1.5.1 (build 34)** Universal disponibile per Apple Silicon e Intel.
 - Compilazione e test software di entrambe le architetture verificati con
   Xcode 27 e macOS 26.7.1 su Apple Silicon; i test Intel sono eseguiti tramite
   Rosetta e non sostituiscono il collaudo su un Mac Intel reale.
@@ -251,7 +251,7 @@ Finder, senza sostituire l'app ufficiale. La firma Development serve al
 collaudo locale; non equivale alla firma Developer ID o alla notarizzazione.
 Il riconoscimento e l'attivazione effettiva CTK vanno verificati sul Mac.
 
-### Bundle Universal 2 per il collaudo
+### Bundle Universal per il collaudo
 
 Per compilare ARM64 e Intel dallo stesso snapshot e ottenere un'unica app
 firmata con Apple Development:
@@ -272,7 +272,7 @@ al bundle reale `~/Developer/Builds/CIE-ID/universal2/CIE ID.app`.
 Il builder usa `lipo` su tutti i Mach-O dell'app, compresi i componenti Debug,
 `CIEToken.appex` e le due copie del middleware. Lo SDK di firma e le sue
 dipendenze statiche sono incorporati in entrambe le architetture del
-middleware; una copia Universal 2 dello SDK viene preparata anche in
+middleware; una copia Universal dello SDK viene preparata anche in
 `.build/native/universal2/libcie_sign_sdk.a`.
 Il confronto delle risorse rifiuta bundle incompatibili. I nib AppKit sono
 indipendenti dalla CPU: per lo storyboard vengono usate insieme le risorse
@@ -292,9 +292,9 @@ corrispondono esattamente ai sorgenti correnti e ai bundle. Le modifiche
 richiedono nuove build. `--team TEAM_ID` e `--configuration Release` sono
 supportati. Per la distribuzione Developer ID usare la procedura Release seguente.
 Il progetto Xcode continua a compilare un'architettura per volta attraverso
-`CIE_NATIVE_ARCH`; per il bundle completo usare il builder Universal 2.
+`CIE_NATIVE_ARCH`; per il bundle completo usare il builder Universal.
 
-### Release Universal 2 con Developer ID e notarizzazione
+### Release Universal con Developer ID e notarizzazione
 
 Compilare una Release con identificativi di distribuzione e un proprio
 certificato Developer ID Application:

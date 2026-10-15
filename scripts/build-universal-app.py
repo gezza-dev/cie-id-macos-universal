@@ -1,6 +1,6 @@
 #!/usr/bin/env python3
 # SPDX-License-Identifier: BSD-3-Clause
-"""Build, merge, test and sign a complete Universal 2 app."""
+"""Build, merge, test and sign a complete Universal app."""
 import argparse
 import hashlib
 import importlib.util
@@ -247,19 +247,19 @@ def main():
         sign(apps, app, binaries, team, temporary, args.sign_developer_id)
         test_embedded_middleware(app)
         if source_fingerprints() != snapshot or (settings_path.read_bytes() if settings_path.exists() else None) != settings:
-            raise RuntimeError("Source or local signing settings changed during the Universal 2 build")
+            raise RuntimeError("Source or local signing settings changed during the Universal build")
         exported = native.export_app(app, "universal2", variant)
         native.verify_signature(exported, [exported / path for path in binaries], team, ARCHITECTURES, args.sign_developer_id)
         for relative in binaries:
             native.verify_binary(exported / relative, ARCHITECTURES)
     # The signing SDK is static inside each middleware slice. Also stage its
-    # Universal 2 archive for consumers rebuilding the middleware separately.
+    # Universal archive for consumers rebuilding the middleware separately.
     sdk = ROOT / ".build/native" / (variant or "") / "universal2/libcie_sign_sdk.a"
     sdk.parent.mkdir(parents=True, exist_ok=True)
     native.run("lipo", "-create", *[ROOT / ".build/native" / arch / "cie_sign_sdk/libcie_sign_sdk.a"
                                     for arch in ARCHITECTURES], "-output", sdk)
     if set(output("lipo", "-archs", sdk).split()) != set(ARCHITECTURES):
-        raise RuntimeError("Signing SDK is not Universal 2")
+        raise RuntimeError("Signing SDK is not Universal")
     environment = dict(environments[0], architecture="universal2", architectures=list(ARCHITECTURES),
                        command=["python3", "scripts/build-universal-app.py", *sys.argv[1:]],
                        architecture_builds={arch: builds[arch]["build_environment"] for arch in ARCHITECTURES},
@@ -268,7 +268,7 @@ def main():
     receipt.write_text(json.dumps(dict(source_files=snapshot, application=str(exported.relative_to(ROOT)),
                                       application_files=app_fingerprints(exported), build_environment=environment), indent=2) + "\n")
     kind = "Developer ID Application" if args.sign_developer_id else "Apple Development"
-    print(f"Verified Universal 2 app: {len(binaries)} Mach-O files, both architectures, {kind} signature", flush=True)
+    print(f"Verified Universal app: {len(binaries)} Mach-O files, both architectures, {kind} signature", flush=True)
     print("Exported app: " + str(exported.resolve()), flush=True)
 
 

@@ -1,7 +1,7 @@
 # SDK di firma nativo per macOS
 
 L'SDK, il middleware PKCS#11 e l'estensione CryptoTokenKit sono compilati dai
-sorgenti per ARM64 e Intel. Il builder Universal 2 unisce i due bundle e firma
+sorgenti per ARM64 e Intel. Il builder Universal unisce i due bundle e firma
 i componenti incorporati. Gli archivi Intel storici sono esclusi dalla build.
 
 ## Compilazione

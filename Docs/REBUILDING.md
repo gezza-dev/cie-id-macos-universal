@@ -47,7 +47,7 @@ non dipende da librerie proprietarie precompilate del fork. Il manifest
 identifica la build di partenza, senza promettere output identico byte per
 byte: timestamp, SDK Apple e firma possono cambiare i byte prodotti.
 
-## Variante Universal 2
+## Variante Universal
 
 Per ricompilare entrambe le architetture e unirle in un bundle completo,
 con un proprio certificato Apple Development e `LocalSigning.xcconfig`:
@@ -130,7 +130,7 @@ utility di test, non un componente incorporato nel bundle.
 
 ## Riprodurre la variante Developer ID
 
-Usare lo stesso comando Universal 2 con `--configuration Release`,
+Usare lo stesso comando Universal con `--configuration Release`,
 `--sign-developer-id`, un proprio `--team`, `--bundle-id` e certificato
 `--signing-identity`. Questi parametri sono registrati nelle ricevute senza
 password o chiavi. I prodotti sono separati sotto `dist/release`.

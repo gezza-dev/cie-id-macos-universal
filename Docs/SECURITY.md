@@ -40,7 +40,7 @@ OpenSSL resta alla 3.5.9 LTS; sono aggiornati Crypto++, PoDoFo, zlib, Expat,
 libpng, FreeType, fontconfig, libiconv, libxml2, curl e SSZipArchive.
 PoDoFo passa alla 1.1.2 LTS e richiede C++17: firma PDF differita, salvataggio
 incrementale e controllo dei ByteRange. Le dipendenze sono compilate da
-sorgente per ARM64 e Intel; il bundle Universal 2 incorpora entrambe.
+sorgente per ARM64 e Intel; il bundle Universal incorpora entrambe.
 
 ## Test ripetibili
 
