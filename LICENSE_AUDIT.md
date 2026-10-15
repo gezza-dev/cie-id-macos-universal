@@ -1,6 +1,6 @@
 # Audit delle licenze e stato della pubblicazione
 
-Verifica del 14 ottobre 2026 sullo snapshot del fork derivato dal commit
+Verifica del 15 ottobre 2026 sullo snapshot del fork derivato dal commit
 upstream `43da456fb3002e34beccda73b9bc4b149acae534`.
 
 ## Esito e ambito
@@ -41,8 +41,8 @@ componenti con licenze diverse.
 Il problema della build precedente con OpenSSL 1.1.1w è storico.
 La build corrente usa OpenSSL 3.5.9 LTS sotto Apache License 2.0, con testo
 integrale e elenco autori. Non si presume che Apache 2.0 sia compatibile
-con GPLv2: il codice GPL resta escluso dal prodotto come descritto sopra. PoDoFo resta LGPL con l'eccezione OpenSSL dei suoi
-autori, che copre soltanto PoDoFo. FreeType è utilizzato sotto **FTL**, non
+con GPLv2: il codice GPL resta escluso dal prodotto come descritto sopra. PoDoFo 1.1.2 è utilizzato sotto l'alternativa MPL 2.0 offerta dagli autori;
+la precedente eccezione OpenSSL di PoDoFo 0.9.8 non è invocata nella nuova build. FreeType è utilizzato sotto **FTL**, non
 sotto l'alternativa GPL. Il problema non è stato risolto attribuendo una
 nuova licenza globale al binario o estendendo l'eccezione PoDoFo ad altri.
 
@@ -79,11 +79,11 @@ recupero RSA valido e rifiuto di firme troncate/corrotte. Generano firme CMS
 con il generatore reale dell'SDK e un signer software, verificandole con
 OpenSSL. Sono corretti anche il digest SHA-1 erroneamente lungo 24 byte,
 l'identificativo CMS che dichiarava SHA-256 per SHA-1 e la deallocazione
-dell'array hash. Restano test di firme PDF e aggiornamenti incrementali.
+dell'array hash. Sono inclusi test di firme PDF e aggiornamenti incrementali.
 
 ## A04 — sorgenti corrispondenti, LGPL e FreeType
 
-Le utility UUC ancora LGPL, PoDoFo LGPL con eccezione e libiconv/libcharset
+Le utility UUC ancora LGPL, libiconv/libcharset
 LGPL mantengono i testi originali. FreeType è selezionato sotto FTL, con
 credito e testi completi, inclusi gli avvisi dei sottocomponenti.
 
@@ -143,11 +143,11 @@ software e le altre operazioni OpenSSL non devono intercettare la callback
 hardware. I test verificano callback RSA SHA-1/256/384/512, errori della
 carta, query della lunghezza e rifiuto PSS senza accesso alla carta.
 I test comprendono inoltre TLS 1.2/1.3 in memoria dopo la registrazione
-dell'engine, metadati PDF cifrati RC4-40/128 e AES-128, oltre a CMS e firme
+dell'engine, metadati PDF cifrati RC4-40/128, AES-128 e AES-256, oltre a CMS e firme
 PDF incrementali. Percorsi di moduli/configurazioni inesistenti verificano
-che i provider incorporati siano sufficienti. PoDoFo 0.9.8 continua a non
-supportare aggiornamenti incrementali dei PDF cifrati: i test di lettura
-e verifica non attestano la firma incrementale di tali documenti.
+che i provider incorporati siano sufficienti. PoDoFo è migrato a 1.1.2 LTS, con salvataggio incrementale e firma differita.
+I test verificano la conservazione delle firme precedenti; la lettura dei PDF
+cifrati non attesta ogni variante di firma e cifratura.
 I flussi applicativi CIESigner/IAS continuano a usare l'interfaccia di firma
 esistente. Il collaudo CIE/lettore e servizi remoti reali resta necessario.
 
@@ -160,3 +160,16 @@ App Group, firma, provisioning e notarizzazione richiedono configurazione
 per il distributore. Le risorse storiche non attestano permessi sui marchi
 IPZS/CIE. Gli archivi Intel originali e la vecchia storia Git non sono
 parte dello snapshot preparato; vedere `Docs/PUBLICATION.md`.
+
+## Aggiornamento 1.5.1
+
+I lockfile, i testi di licenza e i relativi SHA-256 sono aggiornati alle versioni
+riportate in `THIRD_PARTY_NOTICES.md`. Per PoDoFo si sceglie **MPL 2.0**;
+il pacchetto contiene l'intero archivio upstream, NOTICE, entrambe le alternative
+di licenza e i testi dei componenti incorporati. La libreria è ricostruita senza
+i tool GPL. I moduli LGPL UUC e libiconv restano soggetti ai loro obblighi di
+ricompilazione e ricollegamento, soddisfatti dai materiali sorgente completi.
+
+Gli header Crypto++ 7.0/8.2 rimossi sono registrati separatamente; il controllo
+pubblicazione ne impedisce il ripristino accidentale. OpenSSL resta 3.5.9 LTS.
+I dettagli delle correzioni di sicurezza e dei test sono in `Docs/SECURITY.md`.

@@ -1,124 +1,71 @@
 # SDK di firma nativo per macOS
 
-La nuova build compila dai sorgenti le dipendenze statiche per Apple Silicon.
-Gli archivi Intel storici inutilizzati sono esclusi dallo snapshot del fork;
-la loro rimozione non riscrive la cronologia Git.
+L'SDK, il middleware PKCS#11 e l'estensione CryptoTokenKit sono compilati dai
+sorgenti per ARM64 e Intel. Il builder Universal 2 unisce i due bundle e firma
+i componenti incorporati. Gli archivi Intel storici sono esclusi dalla build.
 
-Il progetto è un fork indipendente dell'upstream IPZS. Per licenze, avvisi
-e punti aperti sulla pubblicazione consultare
-[THIRD_PARTY_NOTICES.md](../THIRD_PARTY_NOTICES.md) e
-[LICENSE_AUDIT.md](../LICENSE_AUDIT.md). La build locale non è una verifica
-della compatibilità delle licenze per distribuire il binario.
+## Compilazione
 
-## Build ARM
-
-Servono macOS su Apple Silicon, Command Line Tools di Xcode (o Xcode completo),
-Python 3.9+, CMake 3.23+, make, Perl e pkg-config. La prima esecuzione richiede
-Internet e può durare diversi minuti. Dalla radice del repository:
+Servono macOS, Xcode/Command Line Tools, Python 3.10+, CMake 3.23+, make,
+Perl, pkg-config, Meson 1.11+ e Ninja. Per l'app completa occorre Xcode completo.
+Dalla radice del repository:
 
 ```sh
 python3 scripts/build-native-sdk.py --arch arm64 --jobs 6
+python3 scripts/build-native-sdk.py --arch x86_64 --jobs 6
 ```
 
-Lo script scarica i sorgenti fissati in
-[`dependencies.lock.json`](../scripts/dependencies.lock.json), verifica i
-checksum SHA-256, compila le dipendenze e il SDK, esegue i test e installa gli
-artefatti localmente. Non installa software nelle cartelle di sistema.
-
-| Artefatto | Percorso |
-| --- | --- |
-| Dipendenze, header e manifest | `.build/dependencies/arm64/prefix` |
-| Log delle dipendenze | `.build/dependencies/arm64/logs` |
-| SDK | `.build/sign-sdk/arm64/install/lib/libcie_sign_sdk.a` |
-| Header pubblici | `.build/sign-sdk/arm64/install/include/cie_sign_sdk` |
-| Test | `.build/sign-sdk/arm64/cie_sdk_tests` |
-
-Queste cartelle sono escluse da Git. Gli archivi e l'eseguibile di test devono
-contenere `arm64`. L'eseguibile deve importare solo librerie e framework di
-macOS: lo script rifiuta dipendenze dinamiche da Homebrew o dalla build.
-
-## Fasi separate
-
-```sh
-python3 scripts/build-dependencies.py --arch arm64 --jobs 6
-cmake -S cie_sign_sdk -B .build/sign-sdk/arm64 \
-  -DCMAKE_BUILD_TYPE=Release \
-  -DCMAKE_OSX_ARCHITECTURES=arm64 \
-  -DCMAKE_OSX_DEPLOYMENT_TARGET=12.0 \
-  -DCIE_DEPENDENCY_PREFIX="$PWD/.build/dependencies/arm64/prefix" \
-  -DCMAKE_INSTALL_PREFIX="$PWD/.build/sign-sdk/arm64/install"
-cmake --build .build/sign-sdk/arm64 --parallel 6
-ctest --test-dir .build/sign-sdk/arm64 --output-on-failure
-cmake --install .build/sign-sdk/arm64
-```
-
-Si usa sempre una build fuori dai sorgenti. Le cache e gli oggetti CMake
-storici presenti nel repository non sono input della nuova build.
-
-La cache delle dipendenze viene invalidata quando cambiano ricette, checksum,
-architettura, deployment target, compilatore o versione dell'SDK macOS.
-Per ricompilare una singola dipendenza, con i suoi prerequisiti già costruiti:
+I test Intel su Apple Silicon richiedono Rosetta. Il builder scarica gli
+archivi fissati nei lockfile e ne verifica gli SHA-256. Non installa librerie
+nelle cartelle di sistema. Le dipendenze sono in
+`.build/dependencies/ARCH/prefix`, l'SDK in `.build/sign-sdk/ARCH/install`.
+La cache viene invalidata quando cambiano ricette, sorgenti, compilatore,
+architettura o SDK. Per ricostruire una sola dipendenza:
 
 ```sh
 python3 scripts/build-dependencies.py --arch arm64 --only podofo --force
 ```
 
-## Versioni e compatibilità
+L'SDK statico richiede anche gli archivi e i framework elencati nel target
+CMake `cie_sign_sdk`; il target propaga al consumatore C++17, le definizioni
+e il collegamento necessario. Non incorporare soltanto `libcie_sign_sdk.a`
+omettendo le sue dipendenze.
 
-Le versioni fissate sono OpenSSL 1.1.1w, Crypto++ 8.2.0, PoDoFo 0.9.8 (commit
-`67b5b8272b76700e0bb756aa0b45300cfc576100`), zlib 1.3.1, bzip2 1.0.8,
-libiconv 1.17, expat 2.6.4, libpng 1.6.47, FreeType 2.13.3, fontconfig 2.15.0,
-libxml2 2.9.14 e curl 8.12.1.
+## Versioni e compatibilità 1.5.1
 
-Questa è una fase di porting, non una configurazione pronta per un rilascio.
-OpenSSL 1.1.1w è mantenuto temporaneamente per compatibilità con le API ENGINE.
-[OpenSSL 1.1.1 è fuori supporto](https://openssl-library.org/post/2023-09-11-eol-111/):
-l'aggiornamento a una versione supportata e la revisione delle altre versioni
-legacy restano necessari prima della distribuzione. Crypto++ è compilato
-nella modalità C++ portabile, con assembly disabilitato anche nel chiamante.
+OpenSSL 3.5.9 LTS, Crypto++ 8.9.0, PoDoFo 1.1.2 LTS, zlib 1.3.2,
+bzip2 1.0.8, libiconv 1.19, Expat 2.9.0, libpng 1.6.59, FreeType 2.14.3,
+fontconfig 2.18.3, libxml2 2.15.4 e curl 8.23.0. Le versioni esatte, gli URL
+e i checksum sono in `scripts/dependencies.lock.json`.
 
-PoDoFo viene compilato dal progetto pubblico. Il vecchio archivio Intel
-conteneva estensioni private senza sorgenti. `CiePdfSignatureField` adatta
-metadati, SubFilter, spazio CMS e aspetto grafico con PNG e testo alle API
-pubbliche. La grafica non è garantita identica al vecchio fork. Nei PDF già
-firmati si usano `LoadFromBuffer(..., true)` e `WriteUpdate` per preservare i
-byte precedenti.
+OpenSSL default e legacy sono statici e non caricano configurazioni esterne.
+ENGINE rimane per la callback hardware, senza registrazione globale come
+engine predefinito. Il provider legacy consente la lettura di PDF RC4;
+HTTPS verifica certificati e nome del server con Apple SecTrust. Crypto++
+è compilato in C++17 senza assembly. Gli header obsoleti 7.0/8.2 sono rimossi.
 
-La codifica grafometrica privata non è ricostruibile dai soli header: le
-richieste con dati grafometrici vengono rifiutate esplicitamente. I normali
-flussi di firma CIE dell'app passano dati grafometrici nulli.
+PoDoFo usa le API pubbliche 1.1: `PdfSigningContext` e firma CMS differita,
+salvataggio incrementale, metadati e PNG trasparente. Le firme precedenti
+mantengono i propri byte. L'aspetto non è garantito identico al vecchio fork
+privato; il formato grafometrico proprietario senza sorgenti è rifiutato.
+I normali flussi dell'app non richiedono dati grafometrici.
 
-## Test senza carta
+La verifica PDF controlla i ByteRange e il contenuto firmato, incluso il
+formato legacy `adbe.pkcs7.sha1`. Il controllo OCSP/CRL verifica firme,
+autorizzazione e tempi; informazioni insufficienti lasciano lo stato sconosciuto.
+Vedere [Docs/SECURITY.md](../Docs/SECURITY.md) per ambito e test.
 
-I test generano chiavi e certificati temporanei e verificano:
+## Test e distribuzione
 
-- chiave pubblica dell'engine e comportamento senza certificato;
-- vettore noto SHA-256 attraverso Crypto++ nativo;
-- inserimento di un PNG trasparente nell'aspetto della firma;
-- firma CMS del PDF e verifica crittografica dei ByteRange;
-- seconda firma incrementale, con byte precedenti identici ed entrambe le
-  firme CMS verificabili.
+La suite genera chiavi temporanee ed esercita digest, RSA, callback ENGINE,
+TLS 1.2/1.3, CMS, firma PDF, PNG trasparente, seconda firma incrementale,
+alterazione dei documenti e lettura RC4/AES-128/AES-256. Gli stub hardware
+sono presenti solo negli eseguibili di test. Il collaudo con carta e lettore
+rimane necessario per i flussi hardware.
 
-Queste prove non certificano il flusso FEA con carta fisica. Usano CMS software
-con `adbe.pkcs7.detached`, senza verifica di una catena pubblica di certificati.
-I simboli di cache, registrazione e SOD forniti dal middleware sono sostituiti
-solo nei test da stub che generano un errore se invocati. Gli stub non sono
-inclusi nella libreria SDK.
-
-## Integrazione con l'app
-
-Il SDK statico non incorpora le altre librerie: il consumatore deve collegare
-anche le dipendenze e i framework indicati dal target CMake `cie_sign_sdk`.
-
-Middleware, estensione CryptoTokenKit e target Xcode usano ora la stessa
-configurazione nativa e gli header Crypto++ 8.2.0. Lo script
-`scripts/build-native-app.py` prepara le dipendenze e compila il bundle
-completo senza CocoaPods. Il target CMake del middleware collega i veri
-simboli di registrazione, cache e SOD; gli stub restano confinati ai test del
-SDK. Restano da provare autenticazione, PIN e firme con carta e lettore.
-Per Universal 2 vanno costruite e validate anche le versioni Intel e poi
-unite le due architetture.
-
-`--arch x86_64` prepara una build Intel separata: non è validata in questa fase
-e richiede un host Intel o Rosetta per i test. Non creare un archivio Universal
-2 usando soltanto gli archivi ARM.
+Il fork conserva BSD 3-Clause e le licenze specifiche dei componenti.
+PoDoFo 1.1.2 è utilizzato sotto MPL 2.0; FreeType sotto FTL.
+[THIRD_PARTY_NOTICES.md](../THIRD_PARTY_NOTICES.md),
+[LICENSE_AUDIT.md](../LICENSE_AUDIT.md) e
+[Docs/REBUILDING.md](../Docs/REBUILDING.md) descrivono attribuzioni, sorgenti
+corrispondenti e ricompilazione/ricollegamento con librerie LGPL modificate.

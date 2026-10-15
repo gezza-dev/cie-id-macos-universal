@@ -85,6 +85,9 @@ def main():
     for item in old_headers:
         if (ROOT / item["path"]).exists():
             errors.append("Obsolete vendored OpenSSL header restored: " + item["path"])
+    for item in json.loads((ROOT / "scripts/removed-legacy-cryptopp-headers.json").read_text())["files"]:
+        if (ROOT / item["path"]).exists():
+            errors.append("Obsolete vendored Crypto++ header restored: " + item["path"])
     for required in ["README.md", "THIRD_PARTY_NOTICES.md", "LICENSE_AUDIT.md", "Docs/PUBLICATION.md", "Docs/REBUILDING.md"]:
         if not (ROOT / required).is_file():
             errors.append("Missing publication document: " + required)

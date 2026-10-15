@@ -21,12 +21,14 @@
 
 
 
-class CCertificate : public CASN1Sequence  
+class CASN1SetOf;
+
+class CCertificate : public CASN1Sequence
 {
 public:
 
 	CCertificate (UUCBufferedReader& reader);
-	
+
 	CCertificate(const BYTE* value, long len);
 
 	//CCertificate (const CCertificateInfo& certInfo, const CAlgorithmIdentifier& algoId, const CASN1BitString& signature);
@@ -38,10 +40,10 @@ public:
 	CCertificateInfo		getCertificateInfo();
 
 	CAlgorithmIdentifier	getAlgorithmIdentifier();
-	
+
 	CASN1OctetString		getAuthorithyKeyIdentifier();
     CASN1OctetString      getSubjectKeyIdentifier();
-    
+
 	CASN1Sequence			getCertificatePolicies();
 
 	CASN1Sequence			getQCStatements();
@@ -50,16 +52,17 @@ public:
 
 	int verifyStatus(REVOCATION_INFO* pRevocationInfo);
 	int verifyStatus(const char* szTime, REVOCATION_INFO* pRevocationInfo);
+    int verifyStatus(const char* szTime, REVOCATION_INFO* information, CASN1SetOf* certificates);
 	bool verifySignature(CCertificate& cert);
 	int verify();
 
 	CName getIssuer();
 	CASN1Integer getSerialNumber();
 	CName getSubject();
-	
-	CASN1UTCTime getExpiration();	
+
+	CASN1UTCTime getExpiration();
 	CASN1UTCTime getFrom();
-	
+
 	CASN1Sequence getExtensions();
 
 	bool isQualified();
@@ -67,7 +70,7 @@ public:
 	bool isValid(const char* szDateTime);
 	bool isSHA256();
 	CASN1Sequence getExtension(const CASN1ObjectIdentifier& oid);
-	
+
 	static CCertificate* createCertificate(UUCByteArray& contentArray);
 };
 

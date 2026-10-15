@@ -10,20 +10,8 @@
 #ifndef _PDFSIGNATUREGENERATOR_H_
 #define _PDFSIGNATUREGENERATOR_H_
 
-#include "podofo/podofo.h"
-#include "podofo/doc/PdfSignOutputDevice.h"
-#ifdef CIE_USE_UPSTREAM_PODOFO
-#include "CiePdfSignatureField.h"
-typedef CiePdfSignatureField CieSignatureField;
-#else
-#include "podofo/doc/PdfSignatureField.h"
-typedef PoDoFo::PdfSignatureField CieSignatureField;
-#endif
 #include "UUCByteArray.h"
-
-
-using namespace PoDoFo;
-using namespace std;
+#include <memory>
 
 class PdfSignatureGenerator
 {
@@ -53,25 +41,9 @@ public:
 	const double getHeight(int pageIndex);
 	
 private:
-	PdfMemDocument* m_pPdfDocument;
-	
-    CieSignatureField* m_pSignatureField;
-	
-	PdfSignOutputDevice* m_pSignOutputDevice;
-	
-	PdfOutputDevice* m_pFinalOutDevice;
-	
-	char* m_pMainDocbuffer;
-	
-	char* m_pSignDocbuffer;
-	
-	const double lastSignatureY(int left, int bottom);
-	
-	int m_actualLen;
-    bool m_incrementalUpdate;
-	
-	static bool IsSignatureField(const PdfMemDocument* pDoc, const PdfObject *const pObj);
-	
+    struct State;
+    std::unique_ptr<State> state_;
+
 };
 
 #endif // _PDFSIGNATUREGENERATOR_H_

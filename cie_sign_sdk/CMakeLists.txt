@@ -11,15 +11,18 @@ if(NOT CIE_DEPENDENCY_PREFIX)
     message(FATAL_ERROR "Set CIE_DEPENDENCY_PREFIX to the native dependency prefix; see README.md")
 endif()
 
-set(CMAKE_CXX_STANDARD 11)
+set(CMAKE_CXX_STANDARD 17)
 
 set(DEPENDENCIES_DIR "${CIE_DEPENDENCY_PREFIX}")
 set(SOURCE_DIR ${CMAKE_CURRENT_SOURCE_DIR}/src)
 set(INCLUDE_DIR ${CMAKE_CURRENT_SOURCE_DIR}/include)
 set(CMAKE_POSITION_INDEPENDENT_CODE ON)
+add_link_options("LINKER:-adhoc_codesign")
 
 set(SRC_LIST
     ${SOURCE_DIR}/Native/RsaRecovery.cpp
+    ${SOURCE_DIR}/Native/HttpClient.cpp
+    ${SOURCE_DIR}/Native/Revocation.cpp
     ${SOURCE_DIR}/Base64.cpp
     ${SOURCE_DIR}/BigInteger.cpp
     ${SOURCE_DIR}/BigIntegerAlgorithms.cpp
@@ -142,10 +145,10 @@ target_include_directories(${PROJECT_NAME} PUBLIC
     $<BUILD_INTERFACE:${DEPENDENCIES_DIR}/include>
     $<BUILD_INTERFACE:${DEPENDENCIES_DIR}/include/freetype2>
     $<BUILD_INTERFACE:${DEPENDENCIES_DIR}/include/libxml2>)
-target_compile_definitions(${PROJECT_NAME} PUBLIC CIE_USE_UPSTREAM_PODOFO=1 CRYPTOPP_DISABLE_ASM=1)
+target_compile_definitions(${PROJECT_NAME} PUBLIC CIE_USE_UPSTREAM_PODOFO=1 CRYPTOPP_DISABLE_ASM=1 PODOFO_STATIC=1)
 
 # Explicit archive paths keep Intel vendored binaries and Homebrew dylibs out.
-set(CIE_STATIC_DEPENDENCIES podofo curl ssl crypto cryptopp fontconfig freetype
+set(CIE_STATIC_DEPENDENCIES podofo podofo_private podofo_3rdparty curl ssl crypto cryptopp fontconfig freetype
     png16 xml2 expat iconv charset bz2 z)
 foreach(dependency IN LISTS CIE_STATIC_DEPENDENCIES)
     set(archive "${DEPENDENCIES_DIR}/lib/lib${dependency}.a")
@@ -193,6 +196,10 @@ install(FILES "${CMAKE_CURRENT_SOURCE_DIR}/../LICENSE.txt"
 option(CIE_BUILD_TESTS "Build SDK integration tests without a physical CIE" ON)
 if(CIE_BUILD_TESTS)
     enable_testing()
+    add_executable(cie_security_tests tests/security_tests.cpp tests/middleware_stubs.cpp)
+    target_include_directories(cie_security_tests PRIVATE ${SOURCE_DIR} ${SOURCE_DIR}/Util ${SOURCE_DIR}/ASN1)
+    target_link_libraries(cie_security_tests PRIVATE ${PROJECT_NAME})
+    add_test(NAME cie_security_tests COMMAND cie_security_tests)
     add_executable(cie_sdk_tests tests/sdk_tests.cpp tests/middleware_stubs.cpp)
     target_include_directories(cie_sdk_tests PRIVATE ${SOURCE_DIR} ${SOURCE_DIR}/Util ${SOURCE_DIR}/ASN1)
     target_link_libraries(cie_sdk_tests PRIVATE ${PROJECT_NAME})

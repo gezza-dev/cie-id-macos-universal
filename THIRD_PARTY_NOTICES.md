@@ -2,7 +2,7 @@
 
 Fork indipendente di `italia/cie-middleware-macos`, basato sul commit
 `43da456fb3002e34beccda73b9bc4b149acae534`. Non è un prodotto ufficiale,
-approvato o supportato da IPZS. Verifica effettuata il 14 ottobre 2026.
+approvato o supportato da IPZS. Verifica effettuata il 15 ottobre 2026.
 
 Questa raccolta accompagna i sorgenti e le build di lavoro. La presenza di
 un avviso non risolve una licenza mancante né autorizza una combinazione di
@@ -41,28 +41,48 @@ I testi qui inclusi provengono dagli archivi con quei checksum.
 | Dipendenza | Versione | Licenza e testi |
 | --- | --- | --- |
 | OpenSSL | 3.5.9 LTS | [Apache License 2.0](LICENSES/openssl/LICENSE.txt), [autori e titolari](LICENSES/openssl/AUTHORS.md) |
-| Crypto++ | 8.2.0 | [File in dominio pubblico, compilazione Boost 1.0 e avvisi CRYPTOGAMS](LICENSES/cryptopp/License.txt) |
-| PoDoFo | 0.9.8, commit `67b5b8272b76700e0bb756aa0b45300cfc576100` | [LGPL 2.0 o successiva](LICENSES/podofo/COPYING.LIB), [GPL per le parti che la dichiarano](LICENSES/podofo/COPYING), [eccezione OpenSSL per le parti coperte](LICENSES/podofo/COPYING.exception) |
-| zlib | 1.3.1 | [zlib](LICENSES/zlib/LICENSE) |
+| Crypto++ | 8.9.0 | [File in dominio pubblico, compilazione Boost 1.0 e avvisi CRYPTOGAMS](LICENSES/cryptopp/License.txt) |
+| PoDoFo | 1.1.2 LTS | [MPL 2.0 scelta per questa build](LICENSES/podofo/COPYING.MPL), [alternativa LGPL](LICENSES/podofo/COPYING.LGPL), [NOTICE upstream](LICENSES/podofo/NOTICE) |
+| zlib | 1.3.2 | [zlib](LICENSES/zlib/LICENSE) |
 | bzip2 | 1.0.8 | [Termini bzip2](LICENSES/bzip2/LICENSE) |
-| GNU libiconv e libcharset | 1.17 | [LGPL 2.1 o successiva](LICENSES/libiconv/COPYING.LIB), [libcharset](LICENSES/libiconv/libcharset--COPYING.LIB) |
-| Expat | 2.6.4 | [MIT](LICENSES/expat/expat--COPYING) |
-| libpng | 1.6.47 | [PNG Reference Library License e avvisi storici](LICENSES/libpng/LICENSE) |
-| FreeType | 2.13.3 | [FTL scelta per questa build](LICENSES/freetype/LICENSE.TXT), [FTL](LICENSES/freetype/docs--FTL.TXT), [GPL](LICENSES/freetype/docs--GPLv2.TXT); avvisi BDF/PCF/hash nella stessa cartella |
-| fontconfig | 2.15.0 | [Termini permissivi e avvisi per i sottocomponenti](LICENSES/fontconfig/COPYING) |
-| Tabelle Unicode di fontconfig | CaseFolding 15.1.0 | [Avviso della copia 2023](LICENSES/unicode/CaseFolding-15.1.0-notice.txt), [Unicode License V3 pubblicata dal titolare](LICENSES/unicode/Unicode-LICENSE-V3.txt) |
-| libxml2 | 2.9.14 | [MIT e avvisi di file con copyright distinti](LICENSES/libxml2/COPYING); avvisi hash/list/trio nella stessa cartella |
-| curl | 8.12.1 | [curl license](LICENSES/libcurl/COPYING) |
-| SSZipArchive | 2.5.5 | [MIT](LICENSES/ssziparchive/LICENSE.txt) |
-| minizip incorporato in SSZipArchive | Copia del tag SSZipArchive 2.5.5 | [zlib](LICENSES/ssziparchive/SSZipArchive--minizip--LICENSE), [copyright dei contributori](LICENSES/ssziparchive/minizip-copyrights.txt) |
+| GNU libiconv e libcharset | 1.19 | [LGPL 2.1 o successiva](LICENSES/libiconv/COPYING.LIB), [libcharset](LICENSES/libiconv/libcharset--COPYING.LIB) |
+| Expat | 2.9.0 | [MIT](LICENSES/expat/expat--COPYING) |
+| libpng | 1.6.59 | [PNG Reference Library License e avvisi storici](LICENSES/libpng/LICENSE) |
+| FreeType | 2.14.3 | [FTL scelta per questa build](LICENSES/freetype/LICENSE.TXT), [FTL](LICENSES/freetype/docs--FTL.TXT), [GPL](LICENSES/freetype/docs--GPLv2.TXT); avvisi BDF/PCF/hash nella stessa cartella |
+| fontconfig | 2.18.3 | [Termini permissivi e avvisi per i sottocomponenti](LICENSES/fontconfig/COPYING) |
+| Tabelle Unicode di fontconfig | CaseFolding 17.0.0 | [Avviso della copia 2025](LICENSES/unicode/CaseFolding-17.0.0-notice.txt), [Unicode License V3 pubblicata dal titolare](LICENSES/unicode/Unicode-LICENSE-V3.txt) |
+| libxml2 | 2.15.4 | [MIT e avvisi di file con copyright distinti](LICENSES/libxml2/COPYING); avvisi hash/list/dict nella stessa cartella |
+| curl | 8.23.0 | [curl license](LICENSES/libcurl/COPYING) |
+| SSZipArchive | 2.6.0 | [MIT](LICENSES/ssziparchive/LICENSE.txt) |
+| minizip incorporato in SSZipArchive | Copia del tag SSZipArchive 2.6.0 | [zlib](LICENSES/ssziparchive/SSZipArchive--minizip--LICENSE), [copyright dei contributori](LICENSES/ssziparchive/minizip-copyrights.txt) |
 
-Crypto++ 7.0 nei vecchi header conservati del middleware non è un input
-della build nativa. Gli header storici dell'SDK dichiarano invece 8.2.0 e
-sono coperti dal testo della medesima versione incluso sopra.
-Il suo [testo di licenza separato](LICENSES/cryptopp-legacy-7.0/License.txt)
-è incluso per la redistribuzione di quei sorgenti. I vecchi archivi Intel e
-gli output CMake upstream inutilizzati sono esclusi dallo snapshot corrente;
-la pulizia non riscrive la cronologia Git.
+Gli header storici Crypto++ 7.0/8.2 sono rimossi: la build utilizza soltanto
+Crypto++ 8.9.0. I percorsi e i checksum dei 338 header rimossi sono in
+`scripts/removed-legacy-cryptopp-headers.json`. Il testo storico di licenza
+7.0 è conservato per attribuzione della precedente importazione.
+
+### Componenti incorporati in PoDoFo 1.1.2
+
+This product includes software developed by the PoDoFo Project
+(https://github.com/podofo/podofo).
+
+Per la libreria PoDoFo è selezionata MPL 2.0; i sorgenti esatti sono inclusi
+nel pacchetto corrispondente. Gli strumenti GPL di PoDoFo non sono compilati.
+AFDKO è disabilitato; i relativi avvisi sono conservati per i sorgenti upstream.
+
+| Componente | Licenza e testi |
+| --- | --- |
+| Chromium Numerics / PDFium | [BSD](LICENSES/podofo/3rdparty--chromium--numerics--LICENSE), [PDFium BSD e Apache](LICENSES/podofo/3rdparty--chromium--pdfium--LICENSE) |
+| Adobe AFDKO | [Apache 2.0](LICENSES/podofo/3rdparty--adobe--afdko--LICENSE) |
+| fmt | [MIT e avviso originale](LICENSES/podofo/fmt-notice.txt) |
+| fast_float | [MIT scelta, con alternative e copyright upstream](LICENSES/podofo/fast-float-notice.txt) |
+| Howard Hinnant date | [MIT](LICENSES/podofo/date-notice.txt) |
+| utf8proc | [MIT](LICENSES/podofo/utf8proc-notice.txt), [Unicode](LICENSES/unicode/Unicode-LICENSE-V3.txt) |
+| utf8cpp | [Boost 1.0 e copyright Nemanja Trifunovic](LICENSES/podofo/utf8cpp-notice.txt) |
+| tcb-span | [Boost 1.0](LICENSES/podofo/Boost-LICENSE-1.0.txt), [copyright Tristan Brindle](LICENSES/podofo/span-notice.txt) |
+| SASLprep | [MIT, copyright Francesco Pretto](LICENSES/podofo/SASLprep-notice.txt); testo MIT in [fmt](LICENSES/podofo/fmt-notice.txt) |
+| LiberaLean, derivato Liberation | [SIL OFL 1.1, titolari e nomi riservati](LICENSES/podofo/src--podofo--private--LiberaLean--LICENSE.txt) |
+| Font Foxit/PDFium | [provenienza e copyright](LICENSES/podofo/src--podofo--private--FoxitFonts--COPYING.txt), [licenza PDFium](LICENSES/podofo/3rdparty--chromium--pdfium--LICENSE) |
 
 ## Attribuzioni OpenSSL e FreeType
 
@@ -72,7 +92,7 @@ NOTICE alla radice. Non sono state riscritte le sue intestazioni.
 Gli header vendored OpenSSL 1.x inutilizzati sono rimossi dallo snapshot;
 non sono input della build né componenti dell'app nuova.
 
-> Portions of this software are copyright © 1996–2024 The FreeType Project
+> Portions of this software are copyright © 1996–2026 The FreeType Project
 > (www.freetype.org). All rights reserved.
 
 Per questa build si sceglie FreeType License (FTL). Il testo dell'alternativa

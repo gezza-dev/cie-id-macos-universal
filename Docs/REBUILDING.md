@@ -8,12 +8,12 @@ certificati privati, dati della carta o chiavi di firma Apple.
 
 ## Ambiente e build
 
-La build verificata usa macOS 26.7.1, Xcode 27, CMake e Python 3.9 o
+La build verificata usa macOS 26.7.1, Xcode 27, CMake e Python 3.10 o
 successivo su Apple Silicon. Le versioni effettive e il deployment target
 12.0 sono registrati nel manifest del pacchetto. Installare Xcode completo,
 avviarlo e completare l'installazione dei componenti. Sono necessari anche
 CMake e gli strumenti di build richiesti dalle dipendenze: `make`, `perl`,
-`pkg-config` e gli strumenti forniti da Xcode; il builder segnala quelli
+`pkg-config`, Meson 1.11 o successivo, Ninja e gli strumenti forniti da Xcode; il builder segnala quelli
 mancanti. Questi strumenti non sono inclusi come binari nel pacchetto.
 
 Estrarre l'archivio e dalla directory `cie-middleware-macos`:
@@ -31,10 +31,10 @@ OpenSSL 3.5.9 viene compilato con `no-shared`, `no-module` e
 `no-autoload-config`: provider default/legacy statici, senza dipendenza da
 percorsi assoluti di moduli/configurazioni sul Mac del compilatore.
 Curl e PoDoFo vengono ricostruiti quando cambia il lock OpenSSL.
-La ricetta corregge inoltre FindLIBCRYPTO di PoDoFo 0.9.8: quando i percorsi
-nativi sono espliciti, il modulo deve comunque impostare LIBCRYPTO_FOUND.
-Il tarball upstream resta integro; la trasformazione verificata viene
-applicata ai sorgenti estratti prima di CMake.
+PoDoFo 1.1.2 usa le API di firma differita; la build seleziona C++17 e
+produce gli archivi `libpodofo.a`, `libpodofo_private.a`, `libpodofo_3rdparty.a`.
+Fontconfig 2.18.3 viene compilato con Meson mediante un file cross per ciascuna
+architettura. Curl usa OpenSSL con Apple SecTrust e il trust store di macOS.
 I test SDK/middleware vengono eseguiti prima della build Xcode. Il risultato
 unsigned è `dist/arm64/CIE ID.app`.
 
@@ -82,7 +82,7 @@ dai sorgenti forniti, installandola nel prefisso nativo
 `.build/dependencies/arm64/prefix` con gli stessi header e nomi di archivi.
 Le opzioni di configurazione sono in `scripts/build-dependencies.py`.
 Ad esempio PoDoFo deve mantenere i propri header sotto `include/podofo` e
-l'archivio statico `lib/libpodofo.a`; libiconv `lib/libiconv.a` e `lib/libcharset.a`.
+gli archivi statici `lib/libpodofo.a`, `lib/libpodofo_private.a`, `lib/libpodofo_3rdparty.a`; libiconv `lib/libiconv.a` e `lib/libcharset.a`.
 Le utility UUC LGPL del progetto sono modificate direttamente nei sorgenti.
 
 Ricompilare l'opera utilizzatrice con il prefisso modificato:
@@ -149,3 +149,13 @@ python3 scripts/check-publication.py --release --arch universal2 --variant relea
 La notarizzazione applica un ticket al bundle; il builder di distribuzione
 aggiorna la ricevuta prima di creare i sorgenti corrispondenti. I controlli
 continuano a rifiutare qualsiasi modifica non registrata dopo la build.
+
+## DMG di distribuzione
+
+Installare il modulo Python `ds_store` (versione verificata 1.3.1) in un
+ambiente locale. Dopo la notarizzazione dell'app, usare `scripts/package-dmg.py`
+con `preview`, aprire il volume e verificarne la finestra; poi `prepare`,
+`submit` e `finalize`, indicando il proprio certificato e profilo notarytool.
+Il layout contiene una finestra 640 × 420 punti, due icone e il collegamento
+`Applicazioni -> /Applications`. Lo script rifiuta la sovrascrittura di un DMG
+esistente e verifica il bundle dopo montaggio e copia.

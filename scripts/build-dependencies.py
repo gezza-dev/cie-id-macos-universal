@@ -17,7 +17,7 @@ LOCK = json.loads((ROOT / "scripts/dependencies.lock.json").read_text())
 ORDER = ["openssl", "cryptopp", "zlib", "bzip2", "libiconv", "expat",
          "libpng", "freetype", "fontconfig", "libxml2", "libcurl", "podofo"]
 ARCHIVES = ["crypto", "ssl", "cryptopp", "z", "bz2", "iconv", "charset",
-            "expat", "png16", "freetype", "fontconfig", "xml2", "curl", "podofo"]
+            "expat", "png16", "freetype", "fontconfig", "xml2", "curl", "podofo", "podofo_private", "podofo_3rdparty"]
 
 
 def run(command, cwd, env, log):
@@ -54,7 +54,7 @@ def main():
     args = parser.parse_args()
     if platform.system() != "Darwin" or args.jobs < 1:
         parser.error("A macOS host and a positive job count are required")
-    for tool in ["cmake", "make", "perl", "pkg-config", "xcrun", "lipo"]:
+    for tool in ["cmake", "make", "perl", "pkg-config", "xcrun", "lipo", "meson", "ninja"]:
         if not shutil.which(tool):
             parser.error("Missing build tool: " + tool)
 
@@ -69,8 +69,8 @@ def main():
                         "-mmacosx-version-min=" + args.deployment_target])
     env.update(CC=subprocess.check_output(["xcrun", "--find", "clang"], text=True).strip(),
                CXX=subprocess.check_output(["xcrun", "--find", "clang++"], text=True).strip(),
-               CFLAGS=flags, CXXFLAGS=flags + " -std=c++11", CPPFLAGS="-I" + shlex.quote(str(prefix / "include")),
-               LDFLAGS=flags + " -L" + shlex.quote(str(prefix / "lib")),
+               CFLAGS=flags, CXXFLAGS=flags + " -std=c++17", CPPFLAGS="-I" + shlex.quote(str(prefix / "include")),
+               LDFLAGS=flags + " -Wl,-adhoc_codesign -L" + shlex.quote(str(prefix / "lib")),
                PKG_CONFIG_LIBDIR=os.pathsep.join([str(prefix / "lib/pkgconfig"), str(prefix / "share/pkgconfig")]), PKG_CONFIG_PATH="",
                MACOSX_DEPLOYMENT_TARGET=args.deployment_target, SDKROOT=sdk)
     recipe_hash = hashlib.sha256(Path(__file__).read_bytes()).hexdigest()
@@ -129,7 +129,7 @@ def main():
                     run(["make", "install_sw"], build, env, log)
                 elif name == "cryptopp":
                     run(["make", "-j" + str(args.jobs), "libcryptopp.a", "CXX=" + env["CXX"],
-                         "IS_ARM32=0", "CXXFLAGS=" + flags + " -std=c++11 -DCRYPTOPP_DISABLE_ASM"], source, env, log)
+                         "IS_ARM32=0", "CXXFLAGS=" + flags + " -std=c++17 -DCRYPTOPP_DISABLE_ASM"], source, env, log)
                     shutil.copy2(source / "libcryptopp.a", prefix / "lib")
                     headers = prefix / "include/cryptopp"
                     headers.mkdir(exist_ok=True)
@@ -139,24 +139,35 @@ def main():
                     run(["make", "-j" + str(args.jobs), "libbz2.a", "CC=" + env["CC"], "CFLAGS=" + flags], source, env, log)
                     shutil.copy2(source / "libbz2.a", prefix / "lib")
                     shutil.copy2(source / "bzlib.h", prefix / "include")
-                elif name in ["libiconv", "fontconfig"]:
-                    options = ["--enable-static", "--disable-shared"]
-                    if name == "libiconv":
-                        options += ["--disable-nls"]
-                    else:
-                        options += ["--disable-docs", "--disable-nls", "--disable-cache-build",
-                                    "--with-add-fonts=/System/Library/Fonts,/Library/Fonts"]
+                elif name == "libiconv":
+                    build_triplet = subprocess.check_output(
+                        ["sh", source / "build-aux/config.guess"], text=True).strip()
                     run([source / "configure", "--prefix=" + str(prefix),
-                         "--host=" + ("aarch64" if args.arch == "arm64" else "x86_64") + "-apple-darwin", *options], build, env, log)
+                         "--build=" + build_triplet,
+                         "--host=" + ("aarch64" if args.arch == "arm64" else "x86_64") + "-apple-darwin",
+                         "--enable-static", "--disable-shared", "--disable-nls"], build, env, log)
                     run(["make", "-j" + str(args.jobs)], build, env, log)
                     run(["make", "install"], build, env, log)
+                elif name == "fontconfig":
+                    cross = build_root / "fontconfig-cross.ini"
+                    family = "aarch64" if args.arch == "arm64" else "x86_64"
+                    cross.write_text("[binaries]\nc = " + repr(env["CC"]) + "\ncpp = " + repr(env["CXX"]) +
+                        "\npkg-config = 'pkg-config'\n[host_machine]\nsystem = 'darwin'\ncpu_family = '" + family +
+                        "'\ncpu = '" + family + "'\nendian = 'little'\n[properties]\nneeds_exe_wrapper = false\n")
+                    run(["meson", "setup", build, source, "--cross-file", cross,
+                         "--prefix=" + str(prefix), "--libdir=lib", "--buildtype=release",
+                         "-Ddefault_library=static", "-Ddoc=disabled", "-Dnls=disabled", "-Dtests=disabled",
+                         "-Dtools=disabled", "-Dcache-build=disabled", "-Dtests-external-fonts=disabled",
+                         "-Dxml-backend=expat", "-Dadditional-fonts-dirs=/System/Library/Fonts,/Library/Fonts"], ROOT, env, log)
+                    run(["meson", "compile", "-C", build, "-j", args.jobs], ROOT, env, log)
+                    run(["meson", "install", "-C", build], ROOT, env, log)
                 elif name == "zlib":
                     cmake(source, build, ["-DZLIB_BUILD_EXAMPLES=OFF"], log)
                     # zlib's older CMake builds both variants even with BUILD_SHARED_LIBS=OFF.
                     for dynamic in (prefix / "lib").glob("libz*.dylib"):
                         dynamic.unlink()
                 elif name == "expat":
-                    cmake(source / "expat", build, ["-DEXPAT_SHARED_LIBS=OFF", "-DEXPAT_BUILD_TESTS=OFF",
+                    cmake(source / "expat" if (source / "expat/CMakeLists.txt").exists() else source, build, ["-DEXPAT_SHARED_LIBS=OFF", "-DEXPAT_BUILD_TESTS=OFF",
                           "-DEXPAT_BUILD_EXAMPLES=OFF", "-DEXPAT_BUILD_TOOLS=OFF", "-DEXPAT_BUILD_DOCS=OFF"], log)
                 elif name == "libpng":
                     shutil.rmtree(prefix / "lib/png.framework", ignore_errors=True)
@@ -168,33 +179,19 @@ def main():
                           "-DLIBXML2_WITH_TESTS=OFF", "-DLIBXML2_WITH_LZMA=OFF", "-DLIBXML2_WITH_ICU=OFF"], log)
                 elif name == "libcurl":
                     cmake(source, build, ["-DBUILD_CURL_EXE=OFF", "-DBUILD_TESTING=OFF",
-                          "-DCURL_USE_OPENSSL=ON", "-DOPENSSL_ROOT_DIR=" + str(prefix),
+                          "-DCURL_USE_OPENSSL=ON", "-DUSE_APPLE_SECTRUST=ON", "-DOPENSSL_ROOT_DIR=" + str(prefix),
                           "-DCURL_USE_LIBPSL=OFF", "-DCURL_USE_LIBSSH2=OFF", "-DUSE_NGHTTP2=OFF",
                           "-DCURL_BROTLI=OFF", "-DCURL_ZSTD=OFF", "-DUSE_LIBIDN2=OFF",
                           "-DCURL_USE_GSSAPI=OFF", "-DCURL_USE_SECTRANSP=OFF"], log)
                 elif name == "podofo":
-                    # PoDoFo 0.9.8 skips LIBCRYPTO_FOUND when both native paths
-                    # are supplied. Validate these explicit paths with FPHSA;
-                    # otherwise encryption is silently disabled despite OpenSSL.
-                    module = source / "cmake/modules/FindLIBCRYPTO.cmake"
-                    marker = b"# check whether using OpenSSL 1.1 API"
-                    contents = module.read_bytes()
-                    if contents.count(marker) != 1:
-                        raise ValueError("Unexpected PoDoFo libcrypto detection source")
-                    addition = (b"# Modified 2026-10-14 for native fork: validate explicit libcrypto paths.\r\n"
-                                b"INCLUDE(FindPackageHandleStandardArgs)\r\n"
-                                b"FIND_PACKAGE_HANDLE_STANDARD_ARGS(LIBCRYPTO DEFAULT_MSG "
-                                b"LIBCRYPTO_INCLUDE_DIR LIBCRYPTO_LIBRARIES)\r\n\r\n")
-                    module.write_bytes(contents.replace(marker, addition + marker))
-                    cmake(source, build, ["-DPODOFO_BUILD_STATIC=ON", "-DPODOFO_BUILD_SHARED=OFF",
-                          "-DPODOFO_BUILD_LIB_ONLY=ON", "-DCMAKE_CXX_STANDARD=11",
+                    cmake(source, build, ["-DPODOFO_BUILD_STATIC=ON", "-DPODOFO_BUILD_LIB_ONLY=ON",
+                          "-DPODOFO_WITH_AFDKO=OFF", "-DCMAKE_CXX_STANDARD=17",
                           "-DCMAKE_DISABLE_FIND_PACKAGE_JPEG=ON", "-DCMAKE_DISABLE_FIND_PACKAGE_TIFF=ON",
-                          "-DCMAKE_DISABLE_FIND_PACKAGE_LIBIDN=ON", "-DCMAKE_DISABLE_FIND_PACKAGE_LUA=ON",
-                          "-DLIBCRYPTO_INCLUDE_DIR=" + str(prefix / "include"),
-                          "-DLIBCRYPTO_LIBRARIES=" + str(prefix / "lib/libcrypto.a"),
+                          "-DCMAKE_DISABLE_FIND_PACKAGE_LCMS2=ON",
                           "-DFREETYPE_INCLUDE_DIR_FT2BUILD=" + str(prefix / "include/freetype2"),
                           "-DFREETYPE_INCLUDE_DIR_FTHEADER=" + str(prefix / "include/freetype2"),
                           "-DFREETYPE_LIBRARY_RELEASE=" + str(prefix / "lib/libfreetype.a")], log)
+
         except subprocess.CalledProcessError:
             print(log_path.read_text()[-6000:], flush=True)
             raise SystemExit("Build failed: " + name + "; see " + str(log_path))

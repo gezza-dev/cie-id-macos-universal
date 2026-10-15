@@ -1745,7 +1745,7 @@
 				"INFOPLIST_KEY_LSApplicationCategoryType" = "public.app-category.utilities";
 				"PRODUCT_BUNDLE_IDENTIFIER" = "$(CIE_BUNDLE_ID)";
 				"CLANG_ENABLE_MODULES" = "YES";
-				"CURRENT_PROJECT_VERSION" = "33";
+				"CURRENT_PROJECT_VERSION" = "34";
 				"MTL_FAST_MATH" = "YES";
 				"MTL_ENABLE_DEBUG_INFO" = "INCLUDE_SOURCE";
 				"MACOSX_DEPLOYMENT_TARGET" = "12.0";
@@ -1781,7 +1781,7 @@
 				"INFOPLIST_KEY_LSApplicationCategoryType" = "public.app-category.utilities";
 				"PRODUCT_BUNDLE_IDENTIFIER" = "$(CIE_BUNDLE_ID)";
 				"CLANG_ENABLE_MODULES" = "YES";
-				"CURRENT_PROJECT_VERSION" = "33";
+				"CURRENT_PROJECT_VERSION" = "34";
 				"MTL_FAST_MATH" = "YES";
 				"MACOSX_DEPLOYMENT_TARGET" = "12.0";
 				"CODE_SIGN_STYLE" = "Automatic";
@@ -2056,7 +2056,7 @@
 				"CLANG_WARN_OBJC_IMPLICIT_RETAIN_SELF" = "YES";
 				"CLANG_WARN_OBJC_ROOT_CLASS" = "YES_ERROR";
 				"GCC_WARN_64_TO_32_BIT_CONVERSION" = "YES";
-				"CLANG_CXX_LANGUAGE_STANDARD" = "gnu++14";
+				"CLANG_CXX_LANGUAGE_STANDARD" = "c++17";
 				"GCC_DYNAMIC_NO_PIC" = "NO";
 				"CLANG_WARN__DUPLICATE_METHOD_MATCH" = "YES";
 				"DEBUG_INFORMATION_FORMAT" = "dwarf";
@@ -2096,7 +2096,7 @@
 				"MACOSX_DEPLOYMENT_TARGET" = "12.0";
 				"CLANG_ANALYZER_NUMBER_OBJECT_CONVERSION" = "YES_AGGRESSIVE";
 				"SDKROOT" = "macosx";
-				"CLANG_CXX_LANGUAGE_STANDARD" = "gnu++14";
+				"CLANG_CXX_LANGUAGE_STANDARD" = "c++17";
 				"CLANG_WARN_BOOL_CONVERSION" = "YES";
 				"CLANG_WARN_UNREACHABLE_CODE" = "YES";
 				"ENABLE_STRICT_OBJC_MSGSEND" = "YES";
@@ -2147,6 +2147,8 @@
 				"OTHER_LDFLAGS" = (
 					"$(inherited)",
 					"-ObjC",
+					"-lpodofo_private",
+					"-lpodofo_3rdparty",
 					"-lssl",
 					"-lcrypto",
 					"-lcharset",
@@ -2194,6 +2196,8 @@
 				"OTHER_LDFLAGS" = (
 					"$(inherited)",
 					"-ObjC",
+					"-lpodofo_private",
+					"-lpodofo_3rdparty",
 					"-lssl",
 					"-lcrypto",
 					"-lcharset",

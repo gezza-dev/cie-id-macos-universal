@@ -62,26 +62,25 @@ static void testEngineCallback(EVP_PKEY* key, X509* certificate)
 }
 static void testEncryptedPdfs()
 {
-    using Encrypt=PoDoFo::PdfEncrypt;
-    std::vector<Encrypt::EPdfEncryptAlgorithm> algorithms={Encrypt::ePdfEncryptAlgorithm_RC4V1,
-        Encrypt::ePdfEncryptAlgorithm_RC4V2, Encrypt::ePdfEncryptAlgorithm_AESV2};
-#ifdef PODOFO_HAVE_LIBIDN
-    algorithms.push_back(Encrypt::ePdfEncryptAlgorithm_AESV3);
-#endif
+    using namespace PoDoFo;
+    std::vector<PdfEncryptionAlgorithm> algorithms={PdfEncryptionAlgorithm::RC4V1,
+        PdfEncryptionAlgorithm::RC4V2, PdfEncryptionAlgorithm::AESV2, PdfEncryptionAlgorithm::AESV3R6};
     for (auto algorithm : algorithms) {
-        PoDoFo::PdfMemDocument document;
-        document.CreatePage(PoDoFo::PdfRect(0,0,595,842));
-        document.GetInfo()->SetTitle(PoDoFo::PdfString("Native encrypted PDF"));
-        document.SetEncrypted("","owner",Encrypt::ePdfPermissions_Print,algorithm,
-                              algorithm==Encrypt::ePdfEncryptAlgorithm_RC4V1 ? Encrypt::ePdfKeyLength_40 : Encrypt::ePdfKeyLength_128);
-        PoDoFo::PdfRefCountedBuffer buffer; PoDoFo::PdfOutputDevice output(&buffer);
-        document.Write(&output);
-        PoDoFo::PdfMemDocument probe;
-        probe.LoadFromBuffer(buffer.GetBuffer(),output.GetLength());
-        require(std::string(probe.GetInfo()->GetTitle().GetString())=="Native encrypted PDF",
+        PdfMemDocument document;
+        document.GetPages().CreatePage(Rect(0,0,595,842));
+        document.GetMetadata().SetTitle(PdfString("Native encrypted PDF"));
+        document.SetEncrypted("", "owner", PdfPermissions::Print, algorithm,
+            algorithm == PdfEncryptionAlgorithm::RC4V1 ? PdfKeyLength::L40 :
+            algorithm == PdfEncryptionAlgorithm::AESV3R6 ? PdfKeyLength::L256 : PdfKeyLength::L128);
+        charbuff buffer; BufferStreamDevice output(buffer);
+        document.Save(output);
+        PdfMemDocument probe;
+        probe.LoadFromBuffer(bufferview(buffer.data(), buffer.size()));
+        require(probe.GetInfo() && probe.GetInfo()->GetTitle().has_value() &&
+                probe.GetInfo()->GetTitle()->GetString() == "Native encrypted PDF",
                 "Encrypted PDF metadata did not decrypt");
         PDFVerifier loaded;
-        require(loaded.Load(buffer.GetBuffer(),output.GetLength())==0,
+        require(loaded.Load(buffer.data(), int(buffer.size()))==0,
                 "SDK cannot load existing encrypted PDF");
     }
     std::unique_ptr<EVP_CIPHER,decltype(&EVP_CIPHER_free)> legacy(

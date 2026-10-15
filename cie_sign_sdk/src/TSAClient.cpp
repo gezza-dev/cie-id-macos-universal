@@ -8,6 +8,7 @@
 #include "ASN1/TimeStampToken.h"
 #include "Base64.h"
 #include "UUCLogger.h"
+#include "Native/HttpClient.h"
 
 USE_LOG;
 
@@ -21,7 +22,9 @@ static size_t WriteCallback(void *contents, size_t size, size_t nmemb, void *use
 
 CTSAClient::CTSAClient(void)
 {
-	m_szTSAUsername[0] = NULL;
+	m_szTSAUsername[0] = 0;
+    m_szTSAPassword[0] = 0;
+    m_szTSAUrl[0] = 0;
 }
 
 CTSAClient::~CTSAClient(void)
@@ -59,7 +62,7 @@ long CTSAClient::GetTimeStampToken(UUCByteArray& digest, const char* szPolicyID,
 	request.toByteArray(tsaRequest);
 
 	UUCByteArray tsdata;
-	
+
 #ifdef __ANDROID__
 
 	long nRet = GetTSAResponse(m_szTSAUrl, m_szTSAUsername, m_szTSAPassword, tsaRequest, tsdata);
@@ -67,69 +70,15 @@ long CTSAClient::GetTimeStampToken(UUCByteArray& digest, const char* szPolicyID,
 		return nRet;
 #else
 
-	//general initilization
-	CURL* ctx = curl_easy_init();
+    cie::HttpOptions options;
+    options.username = m_szTSAUsername;
+    if (m_szTSAUsername[0]) options.password = m_szTSAPassword;
+    std::vector<unsigned char> requestBody(tsaRequest.getContent(), tsaRequest.getContent() + tsaRequest.getLength());
+    auto reply = cie::httpRequest(m_szTSAUrl, requestBody, "application/timestamp-query", options, 1024 * 1024);
+    if (reply.error != CURLE_OK) return reply.error;
+    if (reply.body.empty()) return -1;
+    tsdata.append(reply.body.data(), reply.body.size());
 
-	//set URL
-	curl_easy_setopt(ctx, CURLOPT_URL, m_szTSAUrl);
-
-	//set POST method
-	curl_easy_setopt(ctx, CURLOPT_POST, 1);
-
-	//give the data you want to post
-	curl_easy_setopt(ctx, CURLOPT_POSTFIELDS, tsaRequest.getContent());
-
-	//give the data lenght
-	curl_easy_setopt(ctx, CURLOPT_POSTFIELDSIZE, tsaRequest.getLength());
-
-	//show messages for debugging
-	//curl_easy_setopt(ctx, CURLOPT_VERBOSE);
-
-	//set the callback function that handle the data return from server
-	//if you don't set this, the return data just show up on the screen
-	//size_t write_callback(void *ptr, size_t size, size_t nmemb, void *userp)
-	curl_easy_setopt(ctx, CURLOPT_WRITEFUNCTION, WriteCallback);
-
-	// we pass our 'chunk' struct to the callback function
-	curl_easy_setopt(ctx, CURLOPT_WRITEDATA, (void *)&tsdata);
-
-	curl_easy_setopt(ctx, CURLOPT_SSL_VERIFYPEER, false);
-	curl_easy_setopt(ctx, CURLOPT_SSL_VERIFYHOST, false);
-
-
-	struct curl_slist *headers = NULL;
-	headers = curl_slist_append(headers, "Content-Type: application/timestamp-query");
-
-	//talor the header to application/binary
-	if(m_szTSAUsername[0])
-	{
-		curl_easy_setopt(ctx, CURLOPT_HTTPAUTH, CURLAUTH_BASIC);
-
-		curl_easy_setopt(ctx, CURLOPT_USERNAME, m_szTSAUsername);
-
-		curl_easy_setopt(ctx, CURLOPT_PASSWORD, m_szTSAPassword);
-	}
-
-	curl_easy_setopt(ctx, CURLOPT_HTTPHEADER, headers);
-
-	//let's do it...
-	CURLcode ret = curl_easy_perform(ctx);
-
-	// Check for errors 
-    if(ret != CURLE_OK)
-	{
-		LOG_MSG((0, "HTTPRequest", "error: %x", ret));
-
-      fprintf(stderr, "curl_easy_perform() failed: %s\n",
-              curl_easy_strerror(ret));
-
-	  return ret;
-	}
-	
-	//clean up
-	curl_slist_free_all(headers);
-	curl_easy_cleanup(ctx);
-	
 #endif  // __ANDROID__
 
 	try
@@ -152,7 +101,7 @@ long CTSAClient::GetTimeStampToken(UUCByteArray& digest, const char* szPolicyID,
 	catch(...)
 	{
 		*ppTimeStampToken = NULL;
-	}	
+	}
 
 	if(*ppTimeStampToken == NULL)
 		return -1;

@@ -8,7 +8,7 @@
 #include <openssl/x509v3.h>
 #include <fstream>
 #include <sys/stat.h>
-#include "../../native/OpenSslRuntime.h"
+#include "Native/Digest.h"
 #include <cryptopp/sha.h>
 #include <png.h>
 #include <unistd.h>
@@ -108,17 +108,19 @@ static void testEngine(EVP_PKEY* key, X509* certificate)
 
 static std::vector<char> signPdf(const std::vector<char>& input, EVP_PKEY* key,
                                X509* certificate, const char* field, int expectedSignatures,
-                               const char* imagePath = NULL)
+                               const char* imagePath = NULL, bool legacySha1 = false)
 {
     PdfSignatureGenerator generator;
     require(generator.Load(input.data(), input.size()) == expectedSignatures, "PDF loading/signature count failed");
     generator.InitSignature(0, 0.1f, 0.1f, 0.4f, 0.1f,
         "ARM migration test", "Reason", "Test signer", "Name", "Rome", "Location",
-        field, "adbe.pkcs7.detached", imagePath, "SDK test signature", NULL, NULL);
+        field, legacySha1 ? "adbe.pkcs7.sha1" : "adbe.pkcs7.detached", imagePath, "SDK test signature", NULL, NULL);
     UUCByteArray toSign;
     generator.GetBufferForSignature(toSign);
-    BIO* data = BIO_new_mem_buf(toSign.getContent(), toSign.getLength());
-    CMS_ContentInfo* cms = CMS_sign(certificate, key, NULL, data, CMS_DETACHED | CMS_BINARY);
+    unsigned char hash[20];
+    if (legacySha1) cie::digest(EVP_sha1(), toSign.getContent(), toSign.getLength(), hash);
+    BIO* data = legacySha1 ? BIO_new_mem_buf(hash, sizeof(hash)) : BIO_new_mem_buf(toSign.getContent(), toSign.getLength());
+    CMS_ContentInfo* cms = CMS_sign(certificate, key, NULL, data, CMS_BINARY | (legacySha1 ? 0 : CMS_DETACHED));
     require(cms != NULL, "CMS signing failed");
     int length = i2d_CMS_ContentInfo(cms, NULL);
     std::vector<unsigned char> signature(length);
@@ -144,7 +146,7 @@ static void verifyPdf(const std::vector<char>& pdf, int expectedSignatures)
         require(result & VERIFIED_CERT_VALIDITY, "SDK verifier rejects a current certificate");
     }
     PoDoFo::PdfMemDocument document;
-    document.LoadFromBuffer(pdf.data(), pdf.size());
+    document.LoadFromBuffer(PoDoFo::bufferview(pdf.data(), pdf.size()));
     require(PDFVerifier::GetNumberOfSignatures(&document) == expectedSignatures,
             "Signed PDF has the wrong number of signatures");
     int verified = 0;
@@ -153,7 +155,7 @@ static void verifyPdf(const std::vector<char>& pdf, int expectedSignatures)
         if (!object->IsDictionary()) continue;
         const PoDoFo::PdfObject* range = object->GetDictionary().GetKey("ByteRange");
         const PoDoFo::PdfObject* contents = object->GetDictionary().GetKey("Contents");
-        if (!range || !contents || (!contents->IsString() && !contents->IsHexString())) continue;
+        if (!range || !contents || !contents->IsString()) continue;
         const PoDoFo::PdfArray& offsets = range->GetArray();
         require(offsets.size() == 4, "Invalid PDF ByteRange");
         std::vector<char> signedBytes;
@@ -164,8 +166,8 @@ static void verifyPdf(const std::vector<char>& pdf, int expectedSignatures)
             signedBytes.insert(signedBytes.end(), pdf.begin() + start, pdf.begin() + start + length);
         }
         const PoDoFo::PdfString& value = contents->GetString();
-        const unsigned char* cursor = reinterpret_cast<const unsigned char*>(value.GetString());
-        CMS_ContentInfo* cms = d2i_CMS_ContentInfo(NULL, &cursor, value.GetLength());
+        const unsigned char* cursor = reinterpret_cast<const unsigned char*>(value.GetRawData().data());
+        CMS_ContentInfo* cms = d2i_CMS_ContentInfo(NULL, &cursor, value.GetRawData().size());
         BIO* input = BIO_new_mem_buf(signedBytes.data(), signedBytes.size());
         require(cms && CMS_verify(cms, NULL, NULL, input, NULL, CMS_BINARY | CMS_NO_SIGNER_CERT_VERIFY) == 1,
                 "PDF CMS signature does not verify");
@@ -208,11 +210,11 @@ int main(int argc, char** argv)
         testEncryptedPdfs();
         testTls(key.get(), certificate.get());
         PoDoFo::PdfMemDocument document;
-        document.CreatePage(PoDoFo::PdfRect(0, 0, 595, 842));
-        PoDoFo::PdfRefCountedBuffer buffer;
-        PoDoFo::PdfOutputDevice output(&buffer);
-        document.Write(&output);
-        std::vector<char> input(buffer.GetBuffer(), buffer.GetBuffer() + output.GetLength());
+        document.GetPages().CreatePage(PoDoFo::Rect(0, 0, 595, 842));
+        PoDoFo::charbuff buffer;
+        PoDoFo::BufferStreamDevice output(buffer);
+        document.Save(output);
+        std::vector<char> input(buffer.begin(), buffer.end());
         TestPng png;
         auto first = signPdf(input, key.get(), certificate.get(), "FirstSignature", 0, png.path);
         require(std::string(first.begin(), first.end()).find("/SMask") != std::string::npos,
@@ -222,6 +224,16 @@ int main(int argc, char** argv)
         require(second.size() > first.size() && std::equal(first.begin(), first.end(), second.begin()),
                 "Incremental signing changed the previously signed PDF bytes");
         verifyPdf(second, 2);
+        auto legacy = signPdf(input, key.get(), certificate.get(), "LegacySha1Signature", 0, nullptr, true);
+        PDFVerifier legacyVerifier;
+        require(legacyVerifier.Load(legacy.data(), legacy.size()) == 0, "Legacy SHA-1 PDF load");
+        char legacyType[256] = {};
+        int legacyResult = legacyVerifier.VerifySignature(0, nullptr, legacyType, nullptr);
+        require(legacyResult >= 0 && (legacyResult & VERIFIED_SIGNATURE), "Valid legacy SHA-1 PDF rejected");
+        legacy[7] = legacy[7] == '7' ? '6' : '7';
+        require(legacyVerifier.Load(legacy.data(), legacy.size()) == 0, "Altered legacy SHA-1 PDF load");
+        legacyResult = legacyVerifier.VerifySignature(0, nullptr, legacyType, nullptr);
+        require(legacyResult < 0 || !(legacyResult & VERIFIED_SIGNATURE), "Altered legacy SHA-1 PDF accepted");
         if (argc == 2) {
             std::string directory = argv[1];
             mkdir(directory.c_str(), 0700);
