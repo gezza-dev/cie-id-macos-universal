@@ -1,9 +1,10 @@
-# CIE Middleware macOS — fork Apple Silicon
+# CIE ID per macOS — Universal 2
 
 Fork indipendente e sperimentale di
 [italia/cie-middleware-macos](https://github.com/italia/cie-middleware-macos),
-con modifiche per compilare nativamente su Apple Silicon l'app macOS,
-il middleware PKCS#11, l'estensione CryptoTokenKit e l'SDK di firma.
+con app macOS, middleware PKCS#11, estensione CryptoTokenKit e SDK di firma
+compilati nativamente per **Apple Silicon (arm64) e Intel (x86_64)** in
+un unico bundle **Universal 2**.
 
 **Questo fork non è un prodotto ufficiale di IPZS, non è approvato o
 supportato da IPZS e non sostituisce la distribuzione ufficiale.** I nomi,
@@ -19,23 +20,101 @@ e il prodotto ufficiale su
 [Mac App Store](https://apps.apple.com/it/app/software-cie/id6476510798?mt=12).
 Questi collegamenti riguardano l'upstream, non le build del fork.
 
+## Scaricare CIE ID 1.5.0
+
+La [release v1.5.0 (build 33)](https://github.com/gezza-dev/cie-id-macos-universal/releases/tag/v1.5.0)
+contiene l'app Universal 2 e i materiali corrispondenti:
+
+- [DMG per installare CIE ID](https://github.com/gezza-dev/cie-id-macos-universal/releases/download/v1.5.0/CIE-ID-1.5.0-universal2.dmg),
+  firmato con **Developer ID Application** e **notarizzato da Apple**.
+- [Istruzioni di installazione in italiano](https://github.com/gezza-dev/cie-id-macos-universal/releases/download/v1.5.0/INSTALLAZIONE.txt),
+  consultabili anche offline.
+- [Sorgenti corrispondenti completi](https://github.com/gezza-dev/cie-id-macos-universal/releases/download/v1.5.0/CIE-ID-1.5.0-corresponding-source.tar.gz),
+  inclusi gli archivi dei sorgenti delle 13 dipendenze e le ricette di build.
+- [Checksum SHA-256](https://github.com/gezza-dev/cie-id-macos-universal/releases/download/v1.5.0/SHA256SUMS.txt)
+  per verificare i tre allegati precedenti.
+
+App e DMG includono il ticket di notarizzazione. Finché il repository è
+privato, la release e i download sono accessibili soltanto agli utenti
+autorizzati.
+
+## Requisiti e installazione
+
+- **macOS 12.0 o successivo**, su Mac Apple Silicon oppure Intel.
+- Una **CIE e un lettore compatibile** per le operazioni sulla carta.
+- L'accesso a Internet è necessario per interrogare i servizi di revoca
+  durante la verifica delle firme.
+
+Per utilizzare l'app distribuita nel DMG non occorre installare Xcode né
+compilare il progetto.
+
+1. Scaricare il [DMG della release v1.5.0](https://github.com/gezza-dev/cie-id-macos-universal/releases/download/v1.5.0/CIE-ID-1.5.0-universal2.dmg).
+2. Chiudere eventuali copie di CIE ID in esecuzione e aprire il DMG.
+3. Trascinare **CIE ID.app** sul collegamento **Applicazioni** presente
+   nella finestra. Se esiste già un'app con lo stesso nome, verificare
+   quale versione conservare prima di confermare una sostituzione.
+4. Espellere il volume **CIE ID 1.5.0**.
+5. Avviare **CIE ID** dalla cartella **Applicazioni** e seguire la procedura
+   di associazione della carta.
+
+Il fork utilizza identificativi e cache separati dall'app ufficiale: può
+essere necessaria una nuova associazione della CIE. Se macOS richiede
+l'attivazione dell'estensione per smart card, autorizzare **CIEToken**
+nelle Impostazioni di Sistema. Non è necessario disattivare Gatekeeper.
+
+Per verificare i download, salvare i quattro allegati della release nella
+stessa cartella ed eseguire nel Terminale da quella cartella:
+
+```sh
+shasum -a 256 -c SHA256SUMS.txt
+```
+
+Ogni file deve riportare `OK`. Per ricompilare la versione distribuita,
+usare l'archivio **corresponding-source.tar.gz**: i download automatici
+GitHub **Source code (zip/tar.gz)** non includono gli archivi delle dipendenze.
+Il tag `v1.5.0` identifica lo snapshot usato per quella release; il ramo
+`main` può contenere aggiornamenti successivi, compresa questa documentazione.
+
 ## Stato del progetto
 
-- Compilazione ARM64 verificata con Xcode 27 e macOS 26.7.1.
+- Release **1.5.0 (build 33)** Universal 2 disponibile per Apple Silicon e Intel.
+- Compilazione e test software di entrambe le architetture verificati con
+  Xcode 27 e macOS 26.7.1 su Apple Silicon; i test Intel sono eseguiti tramite
+  Rosetta e non sostituiscono il collaudo su un Mac Intel reale.
 - Dipendenze ricostruite dai sorgenti con versioni e SHA-256 fissati.
-- Test software del middleware e dell'SDK superati; collaudo con CIE e lettore
-  reali ancora da completare.
-- Firma locale Apple Development configurabile per app, estensione e middleware;
-  Developer ID e notarizzazione restano necessari per la distribuzione esterna.
+- App, middleware ed estensione della Release firmati con Developer ID
+  Application; app e DMG notarizzati da Apple. Verificati Gatekeeper,
+  ticket incorporati e integrità dell'app dopo la copia dal DMG.
+- Firma Apple Development disponibile per le build di collaudo. Il
+  riconoscimento della carta e i flussi hardware vanno verificati sui Mac,
+  sulle CIE e sui lettori effettivamente utilizzati.
 - RSAEURO, SHA-1 legacy e parti GPL dell'SDK sostituiti con adattatori
   OpenSSL e implementazioni BSD basate sulla libreria standard C++.
-- Snapshot preparato per un nuovo repository indipendente; la storia Git
-  precedente contiene ancora i componenti rimossi e non va importata.
+- Repository indipendente pubblicato da uno snapshot ripulito; la storia Git
+  upstream precedente contiene ancora i componenti rimossi e non viene importata.
   La distribuzione binaria deve includere i sorgenti corrispondenti e
   rispettare i termini LGPL e delle altre dipendenze. Consultare
   [LICENSE_AUDIT.md](LICENSE_AUDIT.md) e [Docs/PUBLICATION.md](Docs/PUBLICATION.md).
 
 ## Funzioni e modifiche del fork
+
+L'interfaccia dell'app e le finestre di apertura/salvataggio dei documenti
+sono in italiano. Le funzioni disponibili comprendono:
+
+- **Associazione e gestione delle CIE** nell'app.
+- **Cambio PIN** e **sblocco della carta tramite PUK**.
+- **Firma elettronica con CIE** in formato **PAdES** per i PDF e **CAdES**
+  per i file `.p7m`, con anteprima e segno grafico opzionale per la firma PDF.
+- **Verifica delle firme** di PDF e file `.p7m`, con dettagli dei firmatari,
+  validità crittografica della firma, periodo di validità del certificato
+  e stato di revoca presentati separatamente.
+- **Estrazione del documento** contenuto nei file `.p7m`.
+- **Integrazione smart card** tramite middleware **PKCS#11** ed estensione
+  **CryptoTokenKit**, inclusi nel bundle per entrambe le architetture.
+- **Impostazioni di proxy e log**, tutorial e aiuto integrati.
+
+La verifica distingue uno stato di revoca sconosciuto o un servizio non
+raggiungibile da una firma crittograficamente non valida.
 
 Il progetto comprende un'app AppKit per la CIE, un middleware PKCS#11 v2.20
 in sola lettura e un TokenDriver CryptoTokenKit per esporre il certificato
@@ -269,10 +348,9 @@ PDF, PNG trasparente e seconda firma incrementale. I test di verifica
 esercitano anche il collegamento usato dall’interfaccia: nomi dei firmatari,
 PDF/CMS validi e alterati, firme multiple, revoca sconosciuta e recupero
 dopo errori di lettura. Periodo di validità del certificato e stato di revoca
-sono riportati separatamente. Devono ancora essere
-provati con lettore e CIE reali autenticazione, associazione, gestione PIN e
-firme PAdES/CAdES. Non sono state eseguite operazioni sulla carta durante la
-build.
+sono riportati separatamente. I test automatici della build non eseguono
+operazioni sulla carta: autenticazione, associazione, gestione PIN e firme
+PAdES/CAdES richiedono anche un collaudo con lettore e CIE reali.
 
 Versioni delle dipendenze, compatibilità OpenSSL e differenze del nuovo
 adattatore PoDoFo sono documentate nel [README del SDK](cie_sign_sdk/README.md).
