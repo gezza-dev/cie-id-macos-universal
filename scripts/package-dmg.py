@@ -158,7 +158,7 @@ elif mode == 'finalize':
             assert os.readlink(mount / 'Applicazioni') == '/Applications'
             assert {p.name for p in mount.iterdir() if not p.name.startswith('.')} == {'CIE ID.app','Applicazioni'}
             with DSStore.open(str(mount / '.DS_Store'), 'r') as store:
-                assert store['.']['vstl'] == ('type', b'icnv')
+                assert store['.']['vstl'] == (b'type', b'icnv')
                 assert store['.']['bwsp']['WindowBounds'] == '{{240, 180}, {640, 420}}'
                 assert store['CIE ID.app']['Iloc'] == (175, 155)
                 assert store['Applicazioni']['Iloc'] == (465, 155)
