@@ -5,7 +5,7 @@
 >
 > Per informazioni, aggiornamenti e download, consulta il [nuovo repository](https://github.com/gezza-dev/firma-con-cie) e l’[ultima versione disponibile](https://github.com/gezza-dev/firma-con-cie/releases/latest).
 
-
+<br>
 
 # CIE ID per macOS — Universal
 
