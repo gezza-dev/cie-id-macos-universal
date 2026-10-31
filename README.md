@@ -5,8 +5,6 @@
 >
 > Per informazioni, aggiornamenti e download, consulta il [nuovo repository](https://github.com/gezza-dev/firma-con-cie) e l’[ultima versione disponibile](https://github.com/gezza-dev/firma-con-cie/releases/latest).
 
-![CIE ID per macOS - Universal per Apple Silicon e Intel, fork indipendente e sperimentale](.github/social-preview.png)
-
 # CIE ID per macOS — Universal
 
 Fork indipendente e sperimentale di
