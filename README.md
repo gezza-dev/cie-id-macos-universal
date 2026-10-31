@@ -1,3 +1,10 @@
+> [!IMPORTANT]
+> **Progetto non più attivo**
+>
+> CIE ID Universal per macOS non è più attivamente sviluppato ed è stato sostituito da **[Firma con CIE](https://github.com/gezza-dev/firma-con-cie)**, la nuova applicazione desktop indipendente per la firma elettronica tramite CIE, compatibile con **Windows, macOS e Linux**.
+>
+> Per informazioni, aggiornamenti e download, consulta il [nuovo repository](https://github.com/gezza-dev/firma-con-cie) e l’[ultima versione disponibile](https://github.com/gezza-dev/firma-con-cie/releases/latest).
+
 ![CIE ID per macOS - Universal per Apple Silicon e Intel, fork indipendente e sperimentale](.github/social-preview.png)
 
 # CIE ID per macOS — Universal
